@@ -11,7 +11,7 @@ MyScene::~MyScene()
 
 bool MyScene::init() {
     bool ret = false;
-    CCLOG("i am here 5");
+    CCLOG("MyScene::init");
     do {
         CC_BREAK_IF(!Scene::init());
 

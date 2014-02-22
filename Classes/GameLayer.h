@@ -3,6 +3,10 @@
 
 #include "cocos2d.h"
 #include "OptionLayer.h"
+#include "Hero.h"
+#include "Enemy.h"
+#include "Hostage.h"
+
 USING_NS_CC;
 
 class GameLayer : public cocos2d::Layer, public OptionDelegate
@@ -20,7 +24,10 @@ public:
     void onStop();
 
 private:
-    Sprite* _hero;
+    Hero* _hero;
+    Enemy* _enemy;
+    Hostage* _hostage1;
+    Hostage* _hostage2;
     int tempstate=0;
     int tempdirect=0;
     TMXTiledMap* _map;

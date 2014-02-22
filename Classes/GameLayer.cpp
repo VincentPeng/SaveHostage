@@ -1,5 +1,4 @@
 #include "GameLayer.h"
-#include "Hero.h"
 
 USING_NS_CC;
 using namespace std;
@@ -19,8 +18,7 @@ bool GameLayer::init() {
 
         _map = TMXTiledMap::create("basemap1.tmx");
 
-        CCLOG(
-                "map size:%f,%f", _map->getTileSize().width, _map->getTileSize().height);
+        CCLOG("map size:%f,%f", _map->getTileSize().width, _map->getTileSize().height);
         _bgLayer = _map->getLayer("background");
         _metaLayer = _map->getLayer("meta");
         _metaLayer->setVisible(false);
@@ -30,16 +28,33 @@ bool GameLayer::init() {
             CCLOG("cr GameLayer::init 4");
         this->addChild(_map, 0);
 
-        _hero = Hero::create("hero.png");
-        CCLOG(
-                "GameLayer: %f, %f, %f, %f", _map->getMapSize().width, _map->getTileSize().width, _map->getMapSize().height, _map->getTileSize().height);
+        _hero = Hero::create();
+        CCLOG("GameLayer: %f, %f, %f, %f", _map->getMapSize().width, _map->getTileSize().width, _map->getMapSize().height, _map->getTileSize().height);
         _hero->setPosition(
                 Point(
-                        _map->getMapSize().width * _map->getTileSize().width
+                        (_map->getMapSize().width-1) * _map->getTileSize().width
                                 - _map->getTileSize().width / 2,
-                        _map->getMapSize().height * _map->getTileSize().height
+                        (_map->getMapSize().height-1) * _map->getTileSize().height
                                 - _map->getTileSize().height / 2));
-        this->addChild(_hero);
+        this->addChild(_hero,1);
+
+        _enemy = Enemy::create();
+        _enemy->setPosition(Point(
+                _map->getMapSize().width * _map->getTileSize().width/2,
+                _map->getMapSize().height * _map->getTileSize().height/2));
+        this->addChild(_enemy,1);
+
+
+        _hostage1 = Hostage::create();
+        _hostage1->setPosition(Point(_map->getTileSize().width*2 - _map->getTileSize().width / 2,
+                _map->getTileSize().height*17 - _map->getTileSize().height / 2));
+        this->addChild(_hostage1,1);
+
+        _hostage2 = Hostage::create();
+        _hostage2->setPosition(Point(_map->getTileSize().width*12 - _map->getTileSize().width / 2,
+                _map->getTileSize().height*2 - _map->getTileSize().height / 2));
+        this->addChild(_hostage2,1);
+
         this->schedule(schedule_selector(GameLayer::update), 0.3f);
         ret = true;
     } while (0);
@@ -48,6 +63,9 @@ bool GameLayer::init() {
 
 void GameLayer::update(float dt) {
     //            CCLOG("%f",dt);
+    _hero->doAction();
+    _enemy->doAction();
+
     if (tempstate == 1) {
         int newx, newy;
         switch (tempdirect) {

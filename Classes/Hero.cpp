@@ -7,12 +7,16 @@ Hero::~Hero()
 {}
 
 bool Hero::init() {
-    CCLOG("gao0");
     bool ret=false;
     do {
-        CCLOG("gao");
-        CC_BREAK_IF(!Sprite::create("hero.png"));
+        CCLOG("Hero::init 1");
+        CC_BREAK_IF(!Sprite::initWithFile("hero.png"));
+        CCLOG("Hero::init 2");
         ret = true;
     } while(0);
     return ret;
+}
+
+void Hero::doAction() {
+//    CCLOG("Hero::doAction");
 }

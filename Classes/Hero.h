@@ -8,7 +8,8 @@ public:
     Hero();
     ~Hero();
     bool init();
-//    CREATE_FUNC(Hero);
+    CREATE_FUNC(Hero);
+    void doAction();
 
 };
 
