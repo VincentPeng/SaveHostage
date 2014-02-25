@@ -10,7 +10,10 @@ public:
     bool init();
     CREATE_FUNC(Hero);
     void doAction();
+    void setSpeed(int s);
 
+private:
+    int speed;
 };
 
 #endif // end of PkGc_cocos2dx_saveHostage_HERO_H_

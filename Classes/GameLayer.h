@@ -23,6 +23,9 @@ public:
     void onWalk(int direction);
     void onStop();
 
+    void checkNewEvent();
+    int distance(Point, Point);
+
 private:
     Hero* _hero;
     Enemy* _enemy;

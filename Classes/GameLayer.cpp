@@ -1,4 +1,6 @@
 #include "GameLayer.h"
+#include "EnumUtil.h"
+#include <math.h>
 
 USING_NS_CC;
 using namespace std;
@@ -32,10 +34,10 @@ bool GameLayer::init() {
         CCLOG("GameLayer: %f, %f, %f, %f", _map->getMapSize().width, _map->getTileSize().width, _map->getMapSize().height, _map->getTileSize().height);
         _hero->setPosition(
                 Point(
-                        (_map->getMapSize().width-1) * _map->getTileSize().width
-                                - _map->getTileSize().width / 2,
-                        (_map->getMapSize().height-1) * _map->getTileSize().height
-                                - _map->getTileSize().height / 2));
+                        (_map->getMapSize().width-1) * _map->getTileSize().width/2
+                                ,
+                        (_map->getMapSize().height-1) * _map->getTileSize().height/2
+                                ));
         this->addChild(_hero,1);
 
         _enemy = Enemy::create();
@@ -55,7 +57,7 @@ bool GameLayer::init() {
                 _map->getTileSize().height*2 - _map->getTileSize().height / 2));
         this->addChild(_hostage2,1);
 
-        this->schedule(schedule_selector(GameLayer::update), 0.3f);
+        this->schedule(schedule_selector(GameLayer::update), 0.1f);
         ret = true;
     } while (0);
     return ret;
@@ -66,46 +68,14 @@ void GameLayer::update(float dt) {
     _hero->doAction();
     _enemy->doAction();
 
-    if (tempstate == 1) {
-        int newx, newy;
-        switch (tempdirect) {
-        case 0: //up
-            newx = _hero->getPositionX();
-            newy = _hero->getPositionY() + _map->getTileSize().height;
-            if (canGo(newx, newy)) {
-                _hero->setPositionY(
-                        _hero->getPositionY() + _map->getTileSize().height);
-            }
-            break;
-        case 1: //down
-            newx = _hero->getPositionX();
-            newy = _hero->getPositionY() - _map->getTileSize().height;;
-            if (canGo(newx, newy)) {
-                _hero->setPositionY(
-                        _hero->getPositionY() - _map->getTileSize().height);
-            }
-            break;
-        case 2: //left
-            newx = _hero->getPositionX() - _map->getTileSize().width;
-            newy = _hero->getPositionY();
-            if (canGo(newx, newy)) {
-                _hero->setPositionX(
-                        _hero->getPositionX() - _map->getTileSize().width);
-            }
-            break;
-        case 3: //right
-            newx = _hero->getPositionX() + _map->getTileSize().width;
-            newy = _hero->getPositionY();
-            if (canGo(newx, newy)) {
-                _hero->setPositionX(
-                        _hero->getPositionX() + _map->getTileSize().width);
-            }
-            break;
-        }
-
-    } else {
-        //_hero->setPositionX(_hero->getPositionX()+1);
-    }
+    checkNewEvent();
+//    if()
+//    if (tempstate == 1) {
+//
+//
+//    } else {
+//        //_hero->setPositionX(_hero->getPositionX()+1);
+//    }
 }
 
 Point GameLayer::tileCoordinate(float x, float y) {
@@ -135,11 +105,65 @@ bool GameLayer::canGo(float x, float y) {
 
 void GameLayer::onWalk(int direction) {
     CCLOG("GameLayer onWalk");
+//    _hero->setState(Direction::)
     tempstate = 1;
     tempdirect = direction;
+    int newx, newy;
+        switch (tempdirect) {
+                case 0: //up
+                    newx = _hero->getPositionX();
+                    newy = _hero->getPositionY() + _map->getTileSize().height;
+                    if (canGo(newx, newy)) {
+                        _hero->setPositionY(
+                                _hero->getPositionY() + _map->getTileSize().height);
+                    }
+                    break;
+                case 1: //down
+                    newx = _hero->getPositionX();
+                    newy = _hero->getPositionY() - _map->getTileSize().height;;
+                    if (canGo(newx, newy)) {
+                        _hero->setPositionY(
+                                _hero->getPositionY() - _map->getTileSize().height);
+                    }
+                    break;
+                case 2: //left
+                    newx = _hero->getPositionX() - _map->getTileSize().width;
+                    newy = _hero->getPositionY();
+                    if (canGo(newx, newy)) {
+                        _hero->setPositionX(
+                                _hero->getPositionX() - _map->getTileSize().width);
+                    }
+                    break;
+                case 3: //right
+                    newx = _hero->getPositionX() + _map->getTileSize().width;
+                    newy = _hero->getPositionY();
+                    if (canGo(newx, newy)) {
+                        _hero->setPositionX(
+                                _hero->getPositionX() + _map->getTileSize().width);
+                    }
+                    break;
+                }
 }
 
 void GameLayer::onStop() {
     CCLOG("GameLayer onStop");
     tempstate = 0;
+}
+
+void GameLayer::checkNewEvent() {
+    int dist = distance(_hero->getPosition(), _enemy->getPosition());
+    if (dist < 150) {
+        CCLOG("I see you and attacking!");
+    } else if (dist < 300){
+        CCLOG("I see you!");
+    } else {
+        CCLOG("CANNOT see..");
+    }
+}
+
+int GameLayer::distance(Point a, Point b) {
+    int x = (int)(a.x - b.x);
+    int y = (int)(a.y - b.y);
+
+    return (int)sqrt(x*x + y*y);
 }

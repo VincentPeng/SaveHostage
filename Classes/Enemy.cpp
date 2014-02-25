@@ -11,6 +11,7 @@ bool Enemy::init() {
         CCLOG("Enemy::init 1");
         CC_BREAK_IF(!Sprite::initWithFile("enemy.png"));
         CCLOG("Enemy::init 2");
+        setSpeed(7);
         epath.push_back(Point(BLOCK*5-BLOCK/2,BLOCK*14-BLOCK/2));
         epath.push_back(Point(BLOCK*6-BLOCK/2,BLOCK*15-BLOCK/2));
         epath.push_back(Point(BLOCK*7-BLOCK/2,BLOCK*16-BLOCK/2));
@@ -29,22 +30,24 @@ bool Enemy::init() {
     return ret;
 }
 
-void Enemy::doAction() {
-//    CCLOG("Enemy::doAction");
-    walk();
+void Enemy::setSpeed(int s) {
+    if (s <= 0)
+        this->speed = 7;
+    this->speed = s;
 }
-IDLE, ALERT, LOST, LOOKAROUND, INSPECT
+
+void Enemy::doAction() {
+    // CCLOG("Enemy::doAction");
+    clock++;
+    if(clock % speed == 0) {
+        //walk();
+        clock=1;
+    }
+}
+
 void Enemy::walk() {
     if(epath.empty())
         return;
-    Point nextPoint;
-    if(curState == State::IDLE) {
-        curIndex++;
-        if(curIndex>= epath.size()) {
-            curIndex = 0;
-        }
-        nextPoint = epath[curIndex];
-    }
     switch(curState) {
         case State::IDLE:
             hangAround();
@@ -52,16 +55,30 @@ void Enemy::walk() {
         case State::ALERT:
             alerting();
             break;
-        case State::ALERT:
+        case State::LOST:
             break;
-        case State::ALERT:
+        case State::LOOKAROUND:
             break;
-        case State::ALERT:
+        case State::INSPECT:
             break;
     }
 
 
-    setPosition(nextPoint);
+
+}
+
+void Enemy::hangAround() {
+    Point nextPoint;
+    curIndex++;
+    if (curIndex >= epath.size()) {
+        curIndex = 0;
+    }
+    nextPoint = epath[curIndex];
+    setPosition (nextPoint);
+}
+
+void Enemy::alerting() {
+
 }
 
 void Enemy::shoot() {

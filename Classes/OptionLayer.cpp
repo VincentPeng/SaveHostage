@@ -17,23 +17,23 @@ bool OptionLayer::init() {
     do {
         CC_BREAK_IF(!Layer::init());
         Point origin = Director::getInstance()->getVisibleOrigin();
-        auto upButton = Sprite::create("images/up.png");
-        auto downButton = Sprite::create("images/down.png");
-        auto leftButton = Sprite::create("images/left.png");
-        auto rightButton = Sprite::create("images/right.png");
+        auto upButton = Sprite::create("up.png");
+        auto downButton = Sprite::create("down.png");
+        auto leftButton = Sprite::create("left.png");
+        auto rightButton = Sprite::create("right.png");
 
         upButton->setTag(UPBUTTON);
         downButton->setTag(DOWNBUTTON);
         leftButton->setTag(LEFTBUTTON);
         rightButton->setTag(RIGHTBUTTON);
 
-        upButton->setPosition(Point(origin.x + 120, origin.y + 150));
+        upButton->setPosition(Point(origin.x + 150, origin.y + 180));
         this->addChild(upButton, 2);
-        downButton->setPosition(Point(origin.x + 120, origin.y + 50));
+        downButton->setPosition(Point(origin.x + 150, origin.y + 90));
         this->addChild(downButton, 2);
-        leftButton->setPosition(Point(origin.x + 50, origin.y + 50));
+        leftButton->setPosition(Point(origin.x + 60, origin.y + 90));
         this->addChild(leftButton, 2);
-        rightButton->setPosition(Point(origin.x + 200, origin.y + 50));
+        rightButton->setPosition(Point(origin.x + 240, origin.y + 90));
         this->addChild(rightButton, 2);
 
 
