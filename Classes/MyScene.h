@@ -3,7 +3,7 @@
 
 #include "cocos2d.h"
 #include "GameLayer.h"
-#include "OptionLayer.h"
+#include "SimpleAudioEngine.h"
 
 class MyScene : public cocos2d::Scene
 {
@@ -11,10 +11,12 @@ public:
     MyScene();
     ~MyScene();
     virtual bool init();
+    void loadingResource();
+    void loadingMusic();
     CREATE_FUNC(MyScene);
 
     CC_SYNTHESIZE(GameLayer*, _gameLayer, GameLayer);
-    CC_SYNTHESIZE(OptionLayer*, _optionLayer, OptionLayer);
+    static int musicLoaded;
 };
 
 

@@ -1,5 +1,9 @@
 #include "AppDelegate.h"
 #include "MyScene.h"
+#include "GameLogoScene.h"
+#include "AppDef.h"
+#include "EnumUtil.h"
+#include "SimpleAudioEngine.h"
 
 USING_NS_CC;
 using namespace cocostudio;
@@ -35,8 +39,9 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
 
 
-    auto scene = MyScene::create();
-    CCLOG("i am here 8");
+//    auto scene = MyScene::create();
+    auto scene = GameLogoScene::create();
+    LOGV("i am here 8");
     // run
     director->runWithScene(scene);
 
@@ -45,6 +50,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
 // This function will be called when the app is inactive. When comes a phone call,it's be invoked too
 void AppDelegate::applicationDidEnterBackground() {
+    CocosDenshion::SimpleAudioEngine::sharedEngine()->stopBackgroundMusic();
     Director::getInstance()->stopAnimation();
 
     // if you use SimpleAudioEngine, it must be pause
@@ -53,6 +59,7 @@ void AppDelegate::applicationDidEnterBackground() {
 
 // this function will be called when the app is active again
 void AppDelegate::applicationWillEnterForeground() {
+    CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic(MUSIC_BACKGROUND,true);
     Director::getInstance()->startAnimation();
 
     // if you use SimpleAudioEngine, it must resume here
