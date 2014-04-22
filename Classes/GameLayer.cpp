@@ -52,12 +52,12 @@ GameLayer::~GameLayer() {
 
 }
 
-void GameLayer::resetGameLayer()
-{
-    map<Direction, vector<Rect>> rectsMap = ImageHelper::sharedImageHelper()->getWalkAnimationsRects();
+void GameLayer::resetGameLayer() {
+    map<Direction, vector<Rect>> rectsMap =
+            ImageHelper::sharedImageHelper()->getWalkAnimationsRects();
     _hero->reset();
     for (int i = 0; i < hostages.size(); i++) {
-        hostages[i] -> reset();
+        hostages[i]->reset();
     }
     _enemy->reset();
     positionAllRoles();
@@ -66,33 +66,29 @@ void GameLayer::resetGameLayer()
     heroHealthBarTimer->setPercentage(100);
 }
 
-void GameLayer::restartGame()
-{
+void GameLayer::restartGame() {
     resetGameLayer();
 }
 
-void GameLayer::resumeGmame()
-{
+void GameLayer::resumeGmame() {
     GameSuspended = false;
     joyStickerEnabled = true;
 }
 
-void GameLayer::pauseGame()
-{
+void GameLayer::pauseGame() {
     GameSuspended = true;
     joyStickerEnabled = false;
 }
 
-
-void GameLayer::positionHero()
-{
+void GameLayer::positionHero() {
     _hero->setPosition(tileCoordinate2Pixel(Point(HERO)));
-    _hero->setCurrentNode(tileCoordinate(_hero->getPositionX(), _hero->getPositionY()));
-    _hero->setNextNode(tileCoordinate(_hero->getPositionX(), _hero->getPositionY()));
+    _hero->setCurrentNode(
+            tileCoordinate(_hero->getPositionX(), _hero->getPositionY()));
+    _hero->setNextNode(
+            tileCoordinate(_hero->getPositionX(), _hero->getPositionY()));
 }
 
-void GameLayer::positionHostages()
-{
+void GameLayer::positionHostages() {
     _hostage0->setPosition(tileCoordinate2Pixel(Point(HOSTAGE0)));
     _hostage1->setPosition(tileCoordinate2Pixel(Point(HOSTAGE1)));
     _hostage2->setPosition(tileCoordinate2Pixel(Point(HOSTAGE2)));
@@ -100,26 +96,29 @@ void GameLayer::positionHostages()
     _hostage4->setPosition(tileCoordinate2Pixel(Point(HOSTAGE4)));
 }
 
-void GameLayer::positionEnemies()
-{
+void GameLayer::positionEnemies() {
     _enemy->setPosition(tileCoordinate2Pixel(Point(ENEMY)));
+    _enemy->initialIdleMove();
 }
 
-void GameLayer::positionAllRoles()
-{
+void GameLayer::positionAllRoles() {
     positionHero();
     positionEnemies();
     positionHostages();
+    for (int i = 0; i < potions.size(); i++) {
+        potions[i]->setVisible(true);
+    }
 }
 
-void GameLayer::initGameControls()
-{
-    gameSticker = JoyStick::createJoyStick("control_bg.png", "joystick.png", 25, 65, false, true, false, true);
+void GameLayer::initGameControls() {
+    gameSticker = JoyStick::createJoyStick("control_bg.png", "joystick.png", 25,
+            65, false, true, false, true);
     gameSticker->setPosition(tileCoordinate2Pixel(Point(JOYSTICK)));
     gameSticker->setDelegate(this);
-    this->addChild(gameSticker,2);
+    this->addChild(gameSticker, 2);
 
-    saveBtn = MenuItemImage::create("key.png", "key2.png", CC_CALLBACK_1(GameLayer::saveBtnPressed, this));
+    saveBtn = MenuItemImage::create("key.png", "key2.png",
+            CC_CALLBACK_1(GameLayer::saveBtnPressed, this));
 //    saveBtn->setPosition(200, 110);
     Menu* pMenu = Menu::create(saveBtn, NULL);
     pMenu->setPosition(tileCoordinate2Pixel(Point(UNLOCKBT)));
@@ -129,12 +128,12 @@ void GameLayer::initGameControls()
     heroHealthBarTimer = ProgressTimer::create(timerSprite);
     heroHealthBarTimer->setType(ProgressTimer::Type::BAR);
 //    heroHealthBarTimer->setReverseProgress(true);
-    heroHealthBarTimer->setMidpoint(Point(0.0,0.5));
+    heroHealthBarTimer->setMidpoint(Point(0.0, 0.5));
     heroHealthBarTimer->setPercentage(100);
     heroHealthBarTimer->setZOrder(100);
     heroHealthBarTimer->setVisible(true);
     heroHealthBarTimer->setPosition(555.0f, 90.0f);
-    addChild(heroHealthBarTimer,1);
+    addChild(heroHealthBarTimer, 1);
 }
 
 bool GameLayer::init() {
@@ -152,6 +151,10 @@ bool GameLayer::init() {
         _enemy->setGameLevel();
         initGameControls();
         resetGameLayer();
+        // The Save btn timer should be the child of GameLayer
+        for (int i = 0; i < hostages.size(); i++) {
+            hostages[i]->addSaveTimer(this);
+        }
         this->schedule(schedule_selector(GameLayer::update), 1 / FPS);
         ret = true;
     } while (0);
@@ -190,6 +193,7 @@ void GameLayer::loadCharactorAndScene() {
     hostages.push_back(_hostage3);
     hostages.push_back(_hostage4);
 
+
     hostagesWatch.push_back(Point(WATCHHOSTAGE0));
     hostagesWatch.push_back(Point(WATCHHOSTAGE1));
     hostagesWatch.push_back(Point(WATCHHOSTAGE2));
@@ -197,9 +201,9 @@ void GameLayer::loadCharactorAndScene() {
     hostagesWatch.push_back(Point(WATCHHOSTAGE4));
 
     vector<Sprite*> prisons;
-    for(int i=0;i<5;i++) {
+    for (int i = 0; i < 5; i++) {
         prisons.push_back(Sprite::create("prison.png"));
-        this->addChild(prisons[i],2);
+        this->addChild(prisons[i], 2);
     }
     prisons[0]->setPosition(tileCoordinate2Pixel(Point(HOSTAGE0)));
     prisons[1]->setPosition(tileCoordinate2Pixel(Point(HOSTAGE1)));
@@ -234,50 +238,43 @@ void GameLayer::loadCharactorAndScene() {
     }
 }
 
-void GameLayer::saveBtnPressed(Object* pSender)
-{
+void GameLayer::saveBtnPressed(Object* pSender) {
     CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect(EFCT_UNLOCK1);
 }
 
 /*void GameEndLayer::restartButtonPressed(cocos2d::Object *pSender)
-{
-    CCLOG("restart msg received");
-}
+ {
+ CCLOG("restart msg received");
+ }
 
-void GameEndLayer::settingButtonPressed(cocos2d::Object *pSender)
-{
-    CCLOG("setting msg received");
-}*/
+ void GameEndLayer::settingButtonPressed(cocos2d::Object *pSender)
+ {
+ CCLOG("setting msg received");
+ }*/
 
-void GameLayer::onJoyStickUpdate(Node*sender,float angle,Point direction,float power)
-{
+void GameLayer::onJoyStickUpdate(Node*sender, float angle, Point direction,
+        float power) {
     if (!joyStickerEnabled) {
         return;
     }
 }
 
-Point GameLayer::convertCoordinate2Pixel (int x, int y, int mapHeight)
-{
-    return Point((x + 0.5)*BLKWIDTH,(mapHeight - y - 0.5)*BLKWIDTH);
+Point GameLayer::convertCoordinate2Pixel(int x, int y, int mapHeight) {
+    return Point((x + 0.5) * BLKWIDTH, (mapHeight - y - 0.5) * BLKWIDTH);
 }
 
-void GameLayer::checkSaveButton()
-{
+void GameLayer::checkSaveButton() {
     int i = 0;
-    for (;i < hostages.size(); i++) {
-//        LOGV("saved? %d",hostages[i]->isSaved());
-        if(!hostages[i]->isSaved() && distance(hostages[i]->getPosition(), _hero->getPosition()) < 40.0)
-        {
-//            LOGV("yes");
+    for (; i < hostages.size(); i++) {
+        if (!hostages[i]->isSaved()
+                && distance(hostages[i]->getPosition(), _hero->getPosition())
+                        < 40.0) {
             saveBtn->setEnabled(true);
             break;
         }
     }
-    if (i == hostages.size())
-    {
-//        LOGV("nonono");
+    if (i == hostages.size()) {
         saveBtn->setEnabled(false);
-//        return;
     }
     if (saveBtn->isSelected()) {
         joyStickerEnabled = false;
@@ -286,19 +283,19 @@ void GameLayer::checkSaveButton()
             _hero->getCurrentHostage()->setClockPassed(_hero->getSavingClock());
             return;
         }
-        for (;i < hostages.size(); i++) {
-            if(!hostages[i]->isSaved() && distance(hostages[i]->getPosition(), _hero->getPosition()) < 40.0)
-            {
+        for (; i < hostages.size(); i++) {
+            if (!hostages[i]->isSaved()
+                    && distance(hostages[i]->getPosition(),
+                            _hero->getPosition()) < 40.0) {
                 _hero->setCurrentHostage(hostages[i]);
-                _hero->setTargetSavingClocks(hostages[i]->getTotalClocksNeeded());
-                hostages[i] -> showProgressTimer();
+                _hero->setTargetSavingClocks(
+                        hostages[i]->getTotalClocksNeeded());
+                hostages[i]->showProgressTimer();
                 break;
             }
         }
-    }
-    else
-    {
-        if(_hero->getCurrentHostage())
+    } else {
+        if (_hero->getCurrentHostage())
             _hero->getCurrentHostage()->hideProgressTimer();
         _hero->setCurrentHostage(NULL);
         _hero->zeroSavingClock();
@@ -306,24 +303,48 @@ void GameLayer::checkSaveButton()
     }
 }
 
-void GameLayer::checkJoysticker()
-{
+void GameLayer::checkJoysticker() {
     float angle = gameSticker->getaAngle();
-    if (joyStickerEnabled && gameSticker->getpPower() > 0.5){
+    if (joyStickerEnabled && gameSticker->getpPower() > 0.5) {
         Direction direction = STOP;
         Point nextNode;
         Point current = _hero->getCurrentNode();
         float e = 90.0 / 4;
-        if (angle >= -e && angle < e) { direction = RIGHT; nextNode = Point(current.x + 1, current.y); }
-        if (angle >= e && angle < 3 * e ) { direction = UR; nextNode = Point(current.x + 1, current.y - 1); }
-        if (angle >= 3 * e && angle < 5 * e ) { direction = UP; nextNode = Point(current.x, current.y - 1);}
-        if (angle >= 5 * e && angle < 7 * e ) { direction = UL; nextNode = Point(current.x - 1, current.y - 1);}
-        if (angle >= 7 * e || angle < -7 * e ) { direction = LEFT; nextNode = Point(current.x - 1, current.y);}
-        if (angle >= -7 * e && angle < -5 * e ) { direction = DL; nextNode = Point(current.x - 1, current.y + 1);}
-        if (angle >= - 5 * e && angle < -3 * e ) { direction = DOWN; nextNode = Point(current.x, current.y + 1);}
-        if (angle >= -3 * e && angle < -e ) { direction = DR;nextNode = Point(current.x + 1, current.y + 1);}
+        if (angle >= -e && angle < e) {
+            direction = RIGHT;
+            nextNode = Point(current.x + 1, current.y);
+        }
+        if (angle >= e && angle < 3 * e) {
+            direction = UR;
+            nextNode = Point(current.x + 1, current.y - 1);
+        }
+        if (angle >= 3 * e && angle < 5 * e) {
+            direction = UP;
+            nextNode = Point(current.x, current.y - 1);
+        }
+        if (angle >= 5 * e && angle < 7 * e) {
+            direction = UL;
+            nextNode = Point(current.x - 1, current.y - 1);
+        }
+        if (angle >= 7 * e || angle < -7 * e) {
+            direction = LEFT;
+            nextNode = Point(current.x - 1, current.y);
+        }
+        if (angle >= -7 * e && angle < -5 * e) {
+            direction = DL;
+            nextNode = Point(current.x - 1, current.y + 1);
+        }
+        if (angle >= -5 * e && angle < -3 * e) {
+            direction = DOWN;
+            nextNode = Point(current.x, current.y + 1);
+        }
+        if (angle >= -3 * e && angle < -e) {
+            direction = DR;
+            nextNode = Point(current.x + 1, current.y + 1);
+        }
 
-        Point pixelpos = convertCoordinate2Pixel(nextNode.x, nextNode.y, _map->getMapSize().height);
+        Point pixelpos = convertCoordinate2Pixel(nextNode.x, nextNode.y,
+                _map->getMapSize().height);
         if (canGo(pixelpos.x, pixelpos.y)) {
             _hero->setNextNode(nextNode);
             _hero->setNextPosition(pixelpos);
@@ -332,23 +353,20 @@ void GameLayer::checkJoysticker()
     }
 }
 
-void GameLayer::checkGameEnded()
-{
+void GameLayer::checkGameEnded() {
     int endType = 0;
     if (_hero->isDead()) {
 
         GameSuspended = true;
         endType = 0;
-    } else if (_hero->getCurrentNode() == Point(30, 1))
-    {
+    } else if (_hero->getCurrentNode() == Point(30, 1)) {
         bool saved = true;
         for (int i = 0; i < hostages.size(); i++) {
-            if (hostages[i] -> isSaved() == false) {
+            if (hostages[i]->isSaved() == false) {
                 saved = false;
             }
         }
-        if (saved)
-        {
+        if (saved) {
             CCLOG("Game ends You win!");
             GameSuspended = true;
             endType = 1;
@@ -359,14 +377,13 @@ void GameLayer::checkGameEnded()
         gendlayer->setGameEndLayerType(endType);
         gendlayer->setParentGameLayer(this);
 ////        gendlayer->setZOrder(100);
-        this->addChild(gendlayer,4);
+        this->addChild(gendlayer, 4);
         joyStickerEnabled = false;
     }
 }
 
-void GameLayer::updateHeroHealthBar()
-{
-    heroHealthBarTimer->setPercentage(_hero -> getHealth());
+void GameLayer::updateHeroHealthBar() {
+    heroHealthBarTimer->setPercentage(_hero->getHealth());
 }
 
 void GameLayer::update(float dt) {
@@ -393,19 +410,23 @@ void GameLayer::update(float dt) {
                 switch (tag) {
                 case TAG_HEALTH:
                     _hero->setHealth(100);
-                    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(EFCT_HEAL);
+                    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(
+                            EFCT_HEAL);
                     break;
                 case TAG_INVISIBLE:
                     _hero->setCurBuff(Buff::INVISIBLE);
-                    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(EFCT_INVISIBLE);
+                    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(
+                            EFCT_INVISIBLE);
                     break;
                 case TAG_SPEED:
                     _hero->setCurBuff(Buff::SPEED);
-                    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(EFCT_SPEED);
+                    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(
+                            EFCT_SPEED);
                     break;
                 case TAG_UNBREAK:
                     _hero->setCurBuff(Buff::UNBREAK);
-                    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(EFCT_UNBREAK);
+                    CocosDenshion::SimpleAudioEngine::getInstance()->playEffect(
+                            EFCT_UNBREAK);
                     break;
                 }
                 potions[i]->setVisible(false);
@@ -526,7 +547,7 @@ void GameLayer::onStop() {
  *  Function that can check whether the State should change, depends on the Final State Machine.
  */
 void GameLayer::checkNewEvent() {
-		checkGameEnded();
+    checkGameEnded();
     int dist = distance(_hero->getPosition(), _enemy->getPosition());
     vector<Point>* directPath = getStraightPath(
             tileCoordinate(_enemy->getPosition()),
@@ -774,7 +795,8 @@ void GameLayer::recalculatePath(vector<Point>* directPath) {
         }
 
         _enemy->setInspectTarget((*path)[path->size() - 1]);
-        LOGV("%f %f",_enemy->getInspectTarget().x,_enemy->getInspectTarget().y);
+        LOGV(
+                "%f %f", _enemy->getInspectTarget().x, _enemy->getInspectTarget().y);
         _enemy->setPath(*path);
         _enemy->takeAction();
         break;

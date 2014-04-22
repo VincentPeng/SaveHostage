@@ -33,7 +33,8 @@ void Enemy::reset() {
     this->setSign(sign);
     setTexture("enemyset.png");
     curDirection = Direction::DOWN;
-    setTextureRect(ImageHelper::sharedImageHelper()->getWalkAnimationsRects()[curDirection][1]);
+    setTextureRect(
+            ImageHelper::sharedImageHelper()->getWalkAnimationsRects()[curDirection][1]);
 }
 
 int Enemy::getAtkRange() {
@@ -87,19 +88,25 @@ void Enemy::doAction() {
     walk();
 }
 
-
-Direction Enemy::directionP2P(cocos2d::Point pold, cocos2d::Point pnew)
-{
+Direction Enemy::directionP2P(cocos2d::Point pold, cocos2d::Point pnew) {
     float dx = pnew.x - pold.x, dy = pnew.y - pold.y;
-    if (dx == 0 && dy > 0) return UP;
-    else if (dx == 0 && dy < 0) return DOWN;
-    else if (dx > 0 && dy == 0) return RIGHT;
-    else if (dx < 0 && dy == 0) return LEFT;
-    else if (dx < 0 && dy < 0) return DL;
-    else if (dx < 0 && dy > 0) return UL;
-    else if (dx > 0 && dy > 0) return UR;
-    else if (dx > 0 && dy < 0) return DR;
-    
+    if (dx == 0 && dy > 0)
+        return UP;
+    else if (dx == 0 && dy < 0)
+        return DOWN;
+    else if (dx > 0 && dy == 0)
+        return RIGHT;
+    else if (dx < 0 && dy == 0)
+        return LEFT;
+    else if (dx < 0 && dy < 0)
+        return DL;
+    else if (dx < 0 && dy > 0)
+        return UL;
+    else if (dx > 0 && dy > 0)
+        return UR;
+    else if (dx > 0 && dy < 0)
+        return DR;
+
     return STOP;
 }
 
@@ -115,17 +122,18 @@ void Enemy::walk() {
         }
     } else if (epath.empty() || curIndex >= epath.size())
         return;
-    
+
     /*set direction*/
-    
-    if (curIndex + 1 < epath.size())
-    {
+
+    if (curIndex + 1 < epath.size()) {
         curDirection = directionP2P(epath[curIndex], epath[curIndex + 1]);
         if (curDirection != STOP) {
-            setTextureRect(ImageHelper::sharedImageHelper()->getWalkAnimationsRects()[curDirection][curIndex % 4]);
+            setTextureRect(
+                    ImageHelper::sharedImageHelper()->getWalkAnimationsRects()[curDirection][curIndex
+                            % 4]);
         }
     }
-    
+
     FiniteTimeAction* actionMove = MoveTo::create((float) 1 / FPS * getSpeed(),
             epath[curIndex++]);
     runAction(Sequence::create(actionMove, NULL));
@@ -142,9 +150,9 @@ void Enemy::setState(State state) {
 
 void Enemy::takeAction() {
     curIndex = 0;
-    if(epath.size()>1) {
-        curDirection = directionP2P(epath[curIndex],epath[curIndex+1]);
-    } else if (curState == State::ALERT || curState == State::ATTACK){
+    if (epath.size() > 1) {
+        curDirection = directionP2P(epath[curIndex], epath[curIndex + 1]);
+    } else if (curState == State::ALERT || curState == State::ATTACK) {
         curDirection = directionP2P(getPosition(), target->getPosition());
     }
 }
@@ -191,17 +199,17 @@ void Enemy::idleMoveFrom(int index) {
 }
 
 bool Enemy::canSee(Hero* ob) {
-    if (!ob->ifInvisible() &&
-            distance(this->getPosition(), ob->getPosition()) <= visionRange &&
-            ifVisibleAngle(ob->getPosition())) {
+    if (!ob->ifInvisible()
+            && distance(this->getPosition(), ob->getPosition()) <= visionRange
+            && ifVisibleAngle(ob->getPosition())) {
         return true;
     }
     return false;
 }
 
 bool Enemy::canAttack(Hero* ob) {
-    if (!ob->ifUnbreak() && !ob->ifInvisible() &&
-            distance(this->getPosition(), ob->getPosition()) <= atkRange) {
+    if (!ob->ifUnbreak() && !ob->ifInvisible()
+            && distance(this->getPosition(), ob->getPosition()) <= atkRange) {
         return true;
     }
     return false;
@@ -312,9 +320,10 @@ bool Enemy::ifVisibleAngle(Point target) {
     // transfer into tiled coordinate
     Point myp = parentLayer->tileCoordinate(this->getPosition());
     Point targetp = parentLayer->tileCoordinate(target);
-    float x2 = (targetp.x-myp.x);
-    float y2 = (targetp.y-myp.y);
-    return ((x1*x2+y1*y2) / (sqrt(x1 * x1 + y1 * y1) * sqrt(x2 * x2 + y2 * y2)))>=0;
+    float x2 = (targetp.x - myp.x);
+    float y2 = (targetp.y - myp.y);
+    return ((x1 * x2 + y1 * y2)
+            / (sqrt(x1 * x1 + y1 * y1) * sqrt(x2 * x2 + y2 * y2))) >= 0;
 }
 
 Direction Enemy::getCurDirection() {

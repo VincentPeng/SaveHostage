@@ -43,7 +43,6 @@
 #define PIC_SETTINGS "buttonSetting.png"
 
 #define BUFFTIME 800    // 60 -> 1s
-
 enum State {
     IDLE, ALERT, ATTACK, LOST, LOOKAROUND, INSPECT
 };
@@ -52,7 +51,7 @@ enum Event {
 };
 
 enum Direction {
-    STOP,UP,DOWN,LEFT,RIGHT,UL,UR,DL,DR
+    STOP, UP, DOWN, LEFT, RIGHT, UL, UR, DL, DR
 };
 
 enum GameLevel {
@@ -62,6 +61,5 @@ enum GameLevel {
 enum Buff {
     SPEED, UNBREAK, INVISIBLE, NONE
 };
-
 
 #endif // end of PkGc_cocos2d_saveHostage_ENUMUTIL_H_

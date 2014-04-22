@@ -14,7 +14,7 @@ class GameLayer;
 using namespace std;
 USING_NS_CC;
 
-class Enemy : public cocos2d::Sprite {
+class Enemy: public cocos2d::Sprite {
 public:
     Enemy();
     ~Enemy();
@@ -59,7 +59,7 @@ public:
     int getNormalSpeed();
     void setNormalSpeed(int normalSpeed);
 
-    int distance(Point,Point);
+    int distance(Point, Point);
 
     Hero* getTarget();
     void setTarget(Hero* target);
@@ -95,6 +95,5 @@ private:
     Direction curDirection;
     GameLayer* parentLayer;
 };
-
 
 #endif // end of PkGc_cocos2d_saveHostage_ENEMY_H_

@@ -5,7 +5,7 @@
 #include "cocostudio/CocoStudio.h"
 #include "extensions/cocos-ext.h"
 
-class BgLayer : public cocos2d::Layer {
+class BgLayer: public cocos2d::Layer {
 public:
     BgLayer();
     ~BgLayer();

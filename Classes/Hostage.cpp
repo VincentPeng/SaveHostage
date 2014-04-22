@@ -1,5 +1,6 @@
 #include "Hostage.h"
 #include "ImageHelper.h"
+#include "AppDef.h"
 
 Hostage::Hostage() {}
 
@@ -17,9 +18,6 @@ bool Hostage::init() {
         saveProgressTimer->setType(ProgressTimer::Type::RADIAL);
         saveProgressTimer->setReverseProgress(true);
         saveProgressTimer->setPercentage(100);
-//        saveProgressTimer->setAnchorPoint(Point(0.5f, 0.5f));
-        saveProgressTimer->setPosition(32.0f, 32.0f);
-        addChild(saveProgressTimer,3);
         hideProgressTimer();
         ret = true;
     } while(0);
@@ -134,4 +132,9 @@ void Hostage::followHero()
     setPosition (nextPoint);
     clock++;
     setTextureRect(ImageHelper::sharedImageHelper()->getWalkAnimationsRects()[direction][clock % 4]);
+}
+
+void Hostage::addSaveTimer(GameLayer* gameLayer) {
+    gameLayer->addChild(saveProgressTimer,5);
+    saveProgressTimer->setPosition(this->getPosition());
 }

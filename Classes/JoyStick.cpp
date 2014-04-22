@@ -38,7 +38,8 @@ void JoyStick::initWithBallRadius(int ballradius,int movearearadius,bool isfollo
     Ball =Sprite::create();
     Dock =Sprite::create();
     
-    this->addChild(Ball);
+    this->addChild(Ball,2);
+    this->addChild(Dock,1);
     
     if(!IsCanVisible)
     {
@@ -58,7 +59,7 @@ void JoyStick::setBallTexture(const string&imageName)
 	
 	Sprite *balltexture=Sprite::create(imageName);
 	
-	Ball->addChild(balltexture,3,1);
+	Ball->addChild(balltexture,4,1);
     
 }
 void JoyStick::setDockTexture(const string&imageName)
@@ -67,7 +68,7 @@ void JoyStick::setDockTexture(const string&imageName)
     Dock->removeAllChildrenWithCleanup(true);
 	Sprite *docktexture=Sprite::create(imageName);
 	
-	Dock->addChild(docktexture,3);
+	Dock->addChild(docktexture,3,2);
     
 }
 void JoyStick::setHitAreaWithRadius(int radius)

@@ -1,8 +1,11 @@
 #ifndef PkGc_cocos2dx_saveHostage_HOSTAGE_H_
 #define PkGc_cocos2dx_saveHostage_HOSTAGE_H_
 
+class GameLayer;
+
 #include "cocos2d.h"
 #include "Hero.h"
+#include "GameLayer.h"
 
 class Hostage : public cocos2d::Sprite {
 public:
@@ -23,6 +26,7 @@ public:
     void setNextDirection (Direction nextDirection);
     Direction directionP2P(cocos2d::Point pold, cocos2d::Point pnew);
     void reset();
+    void addSaveTimer(GameLayer* gameLayer);
 private:
     Hero* myHero;
     int clock;

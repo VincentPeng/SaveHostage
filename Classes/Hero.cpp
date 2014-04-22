@@ -216,20 +216,20 @@ void Hero::setCurBuff(Buff buff) {
         speedChange = true;
         this->bufftime = BUFFTIME;
         this->addChild(b, 1, 100);
-        b->setPosition(Point(0.5 * BLKWIDTH, 1.5 * BLKWIDTH));
+        b->setPosition(Point(1 * BLKWIDTH, 2.5 * BLKWIDTH));
         speedChange = true;
         break;
     case Buff::INVISIBLE:
         b = Sprite::create("buff_invisible.png");
         this->bufftime = BUFFTIME;
         this->addChild(b, 1, 100);
-        b->setPosition(Point(0.5 * BLKWIDTH, 1.5 * BLKWIDTH));
+        b->setPosition(Point(1 * BLKWIDTH, 2.5 * BLKWIDTH));
         break;
     case Buff::UNBREAK:
         b = Sprite::create("buff_unbreak.png");
         this->bufftime = BUFFTIME;
         this->addChild(b, 1, 100);
-        b->setPosition(Point(0.5 * BLKWIDTH, 1.5 * BLKWIDTH));
+        b->setPosition(Point(1 * BLKWIDTH, 2.5 * BLKWIDTH));
         break;
     case Buff::NONE:
         this->normalSpeed();
