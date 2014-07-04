@@ -13,7 +13,7 @@
 
 USING_NS_CC;
 
-class PreGameScene : public cocos2d::Scene
+class PreGameScene : public Scene
 {
 private:
     

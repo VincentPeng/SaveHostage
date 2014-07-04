@@ -35,8 +35,8 @@ bool GameLogoScene::init() {
 
 void GameLogoScene::loadGameScene(float dt)
 {
-    auto scene = PreGameScene::create();
+    auto s = PreGameScene::create();
+    auto scene = TransitionFade::create(1.5,s,Color3B::WHITE);
     Director::getInstance()->replaceScene(scene);
-//    Director::getInstance()->pushScene(scene);
     
 }
