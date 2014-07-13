@@ -39,8 +39,14 @@
 
 #define PIC_GAMEOVER "gameover.png"
 #define PIC_GAMEWIN "gamev.png"
+#define PIC_RESUME "buttonResume.png"
+#define PIC_RESUME_PRESSED "buttonResume_pressed.png"
 #define PIC_RESTART "buttonRestart.png"
 #define PIC_SETTINGS "buttonSetting.png"
+#define PIC_PAUSE "buttonPause.png"
+#define PIC_PAUSE_PRESSED "buttonPause_pressed.png"
+#define PIC_SOUND_ON "buttonSound.png"
+#define PIC_SOUND_OFF "buttonSoundOff.png"
 
 #define BUFFTIME 800    // 60 -> 1s
 enum State {

@@ -60,6 +60,9 @@ public:
     void restartGame();
     void pauseGame();
 
+    void pausedGame(Object* pSender);
+    void soundSwitch(Object* pSender);
+
 private:
     Hero* _hero;
     Enemy* _enemy;
@@ -84,6 +87,8 @@ private:
     MenuItemImage* saveBtn;
     bool joyStickerEnabled;
     bool GameSuspended;
+
+    MenuItemImage* pauseBtn;
 };
 
 #endif // end of PkGc_cocos2d_saveHostage_GAMELAYER_H_

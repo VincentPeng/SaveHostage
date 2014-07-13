@@ -4,6 +4,7 @@
 class GameLayer;
 
 #include "cocos2d.h"
+#include "AppDef.h"
 
 USING_NS_CC;
 class GameEndLayer: public cocos2d::Layer {
@@ -15,10 +16,14 @@ public:
     ;
 
     void setGameEndLayerType(int type);
+    void resumeButtonPressed(Object* pSender);
     void restartButtonPressed(Object* pSender);
     void settingButtonPressed(Object* pSender);
     void initMenu();
     void setParentGameLayer(GameLayer* parent);
+
+    static Scene* getScene(RenderTexture* rendertexture);
+    static GameEndLayer* getLayerWithTexture(RenderTexture* rt);
 
 private:
     int layerType;

@@ -236,6 +236,24 @@ void GameLayer::loadCharactorAndScene() {
     for (int i = 0; i < potions.size(); i++) {
         this->addChild(potions[i], 1);
     }
+
+//    soundBtn = MenuItemImage::create(PIC_SOUND_ON, PIC_SOUND_OFF,
+//            CC_CALLBACK_1(GameLayer::pausedGame, this));
+    pauseBtn = MenuItemImage::create(PIC_PAUSE, PIC_PAUSE_PRESSED,
+            CC_CALLBACK_1(GameLayer::pausedGame, this));
+    Menu* menu = Menu::create(pauseBtn,NULL);
+    menu->setPosition(600,45);
+    this->addChild(menu,7);
+
+    MenuItemImage* soundOnBtn = MenuItemImage::create(PIC_SOUND_ON, PIC_SOUND_ON);
+    MenuItemImage* soundOffBtn = MenuItemImage::create(PIC_SOUND_OFF, PIC_SOUND_OFF);
+
+    MenuItemToggle* toggle = MenuItemToggle::createWithCallback(CC_CALLBACK_1(GameLayer::soundSwitch,this), soundOnBtn, soundOffBtn, NULL);
+    Menu* menu1 = Menu::create();
+    menu1->addChild(toggle);
+    menu1->setPosition(550,45);
+    addChild(menu1,7);
+
 }
 
 void GameLayer::saveBtnPressed(Object* pSender) {
@@ -870,3 +888,29 @@ vector<vector<Point>> GameLayer::generateLoop() {
     return loopRoute;
 }
 
+void GameLayer::pausedGame(Object* pSender) {
+    LOGV("GameLayer::pausedGame");
+    Director::getInstance()->pause();
+    Size sz = Director::getInstance()->getWinSize();
+
+    RenderTexture* rendertexture =  RenderTexture::create(sz.width, sz.height);
+
+//    // An object that has not been addChild needs to be retain, otherwise it will be auto released.
+    rendertexture->retain();
+    Scene* sene = Director::getInstance()->getRunningScene();
+    rendertexture->begin();
+    sene->visit();
+    rendertexture->end();
+    GameEndLayer* geLayer = GameEndLayer::getLayerWithTexture(rendertexture);
+    geLayer->setParentGameLayer(this);
+    addChild(geLayer,9999);
+}
+
+void GameLayer::soundSwitch(Object* obj) {
+    LOGV("soundSwitch");
+    if(CocosDenshion::SimpleAudioEngine::sharedEngine()->isBackgroundMusicPlaying()) {
+        CocosDenshion::SimpleAudioEngine::sharedEngine()->pauseBackgroundMusic();
+    } else {
+        CocosDenshion::SimpleAudioEngine::sharedEngine()->resumeBackgroundMusic();
+    }
+}
