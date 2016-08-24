@@ -2,13 +2,13 @@
 //  GameLogoScene.cpp
 //  SaveHostage
 //
-//  Created by 閮�鏅�on 4/6/14.
+//  Created by Ke Peng 4/6/14.
 //
 //
 
 #include "GameLogoScene.h"
-#include "MyScene.h"
-#include "PreGameScene.h"
+
+
 
 GameLogoScene::GameLogoScene()
 {
@@ -25,7 +25,8 @@ bool GameLogoScene::init() {
     CCLOG("GameLogoScene::init");
     do {
         Sprite* bg = Sprite::create("gamelogobg.png");
-        bg->setPosition(480.0f, 270.0f);
+//        bg->setPosition(480.0f, 270.0f);
+        bg->setPosition(WIDTH_CENTER, HEIGHT_CENTER);
         this->schedule(schedule_selector(GameLogoScene::loadGameScene), 2.0f);
         addChild(bg);
         ret = true;

@@ -2,7 +2,7 @@
 //  PreGameScene.h
 //  SaveHostage
 //
-//  Created by 郭 晨 on 4/6/14.
+//  Created by Chen Guo on 4/6/14.
 //
 //
 
@@ -10,6 +10,8 @@
 #define __SaveHostage__PreGameScene__
 
 #include "cocos2d.h"
+#include "EnumUtil.h"
+#include "MyScene.h"
 
 USING_NS_CC;
 

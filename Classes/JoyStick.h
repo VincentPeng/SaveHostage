@@ -2,7 +2,7 @@
 //  JoyStick.h
 //  SaveHostage
 //
-//  Created by 郭 晨 on 2/26/14.
+//  Created by Chen Guo on 2/26/14.
 //
 //
 

@@ -2,7 +2,7 @@
 //  SettingLayer.h
 //  SaveHostage
 //
-//  Created by 郭 晨 on 4/7/14.
+//  Created by Chen Guo on 4/7/14.
 //
 //
 

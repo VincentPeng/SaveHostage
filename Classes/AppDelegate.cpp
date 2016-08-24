@@ -7,6 +7,8 @@
 
 USING_NS_CC;
 
+// Design resolution makes programming simple
+// No matter what is the resolution of your device, it will be shrinked into design resolution
 static cocos2d::Size designResolutionSize = cocos2d::Size(480, 320);
 static cocos2d::Size smallResolutionSize = cocos2d::Size(480, 320);
 static cocos2d::Size mediumResolutionSize = cocos2d::Size(1024, 768);
@@ -42,31 +44,21 @@ bool AppDelegate::applicationDidFinishLaunching() {
     // initialize director
     auto director = Director::getInstance();
     auto glview = director->getOpenGLView();
+    
     if(!glview) {
-#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
-        glview = GLViewImpl::createWithRect("SaveHostage", cocos2d::Rect(0, 0, designResolutionSize.width, designResolutionSize.height));
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || \
+    (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || \
+    (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
+        
+    glview = GLViewImpl::createWithRect("SaveHostage",
+                                        cocos2d::Rect(0, 0, designResolutionSize.width, designResolutionSize.height));
 #else
         glview = GLViewImpl::create("SaveHostage");
 #endif
         director->setOpenGLView(glview);
     }
-    
-    // turn on display FPS
-    director->setDisplayStats(false);
-
-    // set FPS. the default value is 1.0/60 if you don't call this
-    director->setAnimationInterval(1.0 / 60);
-    
-    //auto eglView = EGLView::getInstance();
-    //director->setOpenGLView(eglView);
-    // my phone 1920*1080
-    
-    //auto designResolution = Size(960, 540);
-    //EGLView::getInstance()->setDesignResolutionSize(designResolution.width, designResolution.height, ResolutionPolicy::NO_BORDER);
-    
     // Set the design resolution
     glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::NO_BORDER);
-    
     auto frameSize = glview->getFrameSize();
     // if the frame's height is larger than the height of medium size.
     if (frameSize.height > mediumResolutionSize.height)
@@ -86,15 +78,7 @@ bool AppDelegate::applicationDidFinishLaunching() {
     
     register_all_packages();
 
-
-    // create a scene. it's an autorelease object
-//    auto scene = HelloWorld::createScene();
-
-    
-
-//    auto scene = MyScene::create();
     auto scene = GameLogoScene::create();
-    // run
     director->runWithScene(scene);
 
     return true;
@@ -102,18 +86,16 @@ bool AppDelegate::applicationDidFinishLaunching() {
 
 // This function will be called when the app is inactive. When comes a phone call,it's be invoked too
 void AppDelegate::applicationDidEnterBackground() {
-    CocosDenshion::SimpleAudioEngine::sharedEngine()->stopBackgroundMusic();
     Director::getInstance()->stopAnimation();
 
     // if you use SimpleAudioEngine, it must be pause
-    // SimpleAudioEngine::sharedEngine()->pauseBackgroundMusic();
+    CocosDenshion::SimpleAudioEngine::sharedEngine()->pauseBackgroundMusic();
 }
 
 // this function will be called when the app is active again
 void AppDelegate::applicationWillEnterForeground() {
-    CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic(MUSIC_BACKGROUND,true);
     Director::getInstance()->startAnimation();
 
     // if you use SimpleAudioEngine, it must resume here
-    // SimpleAudioEngine::sharedEngine()->resumeBackgroundMusic();
+    CocosDenshion::SimpleAudioEngine::sharedEngine()->resumeBackgroundMusic();
 }

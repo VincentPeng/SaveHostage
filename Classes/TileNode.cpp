@@ -2,7 +2,7 @@
 //  TileNode.cpp
 //  SaveHostage
 //
-//  Created by 郭 晨 on 2/22/14.
+//  Created by Chen Guo on 2/22/14.
 //
 //
 

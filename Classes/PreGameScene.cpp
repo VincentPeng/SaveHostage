@@ -8,7 +8,7 @@
 //
 
 #include "PreGameScene.h"
-#include "MyScene.h"
+
 
 PreGameScene::PreGameScene()
 {
@@ -26,7 +26,7 @@ bool PreGameScene::init()
     CCLOG("GameLogoScene::init");
     do {
         Sprite* bg = Sprite::create("pregamebg.png");
-        bg->setPosition(480.0f, 270.0f);
+        bg->setPosition(WIDTH_CENTER, HEIGHT_CENTER);
         
 //        this->schedule(schedule_selector(PreGameScene::loadGameScene), 2.0f);
         addChild(bg);

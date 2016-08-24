@@ -6,6 +6,8 @@
 #define HOSTAGESPEED        20
 #define SAVINGCLOCKSNEEDED  100
 #define TILESIZE            64
+#define WIDTH_CENTER            240
+#define HEIGHT_CENTER            160
 
 #define ENEMYSPEED_H 20
 #define ENEMYSPEED_M 25
