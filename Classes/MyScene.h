@@ -6,8 +6,7 @@
 #include "SimpleAudioEngine.h"
 #include "EnumUtil.h"
 
-class MyScene : public cocos2d::Scene
-{
+class MyScene : public cocos2d::Scene {
 public:
     MyScene();
     ~MyScene();
@@ -19,6 +18,5 @@ public:
     CC_SYNTHESIZE(GameLayer*, _gameLayer, GameLayer);
     static int musicLoaded;
 };
-
 
 #endif  // end of PkGc_cocos2d_saveHostage_MYSCENE_H_

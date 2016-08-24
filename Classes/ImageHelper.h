@@ -17,10 +17,10 @@
 using namespace std;
 USING_NS_CC;
 
-class ImageHelper
-{
+class ImageHelper {
 private:
     map<Direction, vector<Rect>> walkAnimationsRects;
+    
 public:
     ImageHelper();
     ~ImageHelper();
@@ -28,7 +28,7 @@ public:
     
     map<Direction, vector<Rect>> getWalkAnimationsRects();
     
-    static ImageHelper* sharedImageHelper ();
+    static ImageHelper* sharedImageHelper();
 };
 
 #endif /* defined(__SaveHostage__ImageHelper__) */

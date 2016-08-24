@@ -10,12 +10,9 @@
 
 int MyScene::musicLoaded = false;
 
-MyScene::MyScene() {
-    
-}
+MyScene::MyScene() {}
 
-MyScene::~MyScene() {
-}
+MyScene::~MyScene() {}
 
 bool MyScene::init() {
     bool ret = false;
@@ -30,9 +27,7 @@ bool MyScene::init() {
 }
 
 void MyScene::loadingResource() {
-    if (!musicLoaded)
-        loadingMusic();
-    
+    if (!musicLoaded) loadingMusic();
 }
 
 void MyScene::loadingMusic() {

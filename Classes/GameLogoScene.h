@@ -15,19 +15,14 @@
 
 USING_NS_CC;
 
-class GameLogoScene : public cocos2d::Scene
-{
+class GameLogoScene : public cocos2d::Scene {
 private:
-    
-    
 public:
-    
     GameLogoScene();
     ~GameLogoScene();
     virtual bool init();
     CREATE_FUNC(GameLogoScene);
     void loadGameScene(float dt);
 };
-
 
 #endif /* defined(__SaveHostage__GameLogoScene__) */

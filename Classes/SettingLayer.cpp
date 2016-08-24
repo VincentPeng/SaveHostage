@@ -8,44 +8,26 @@
 
 #include "SettingLayer.h"
 
-SettingLayer::SettingLayer()
-{
-    
-}
+SettingLayer::SettingLayer() {}
 
+SettingLayer::~SettingLayer() {}
 
-SettingLayer::~SettingLayer()
-{
-    
-}
+void SettingLayer::initMenu() {}
 
+void SettingLayer::initVoiceButton() {}
 
-void SettingLayer::initMenu()
-{
-    
-}
+void SettingLayer::levelChanged(cocos2d::Object* obj) {}
 
-
-void SettingLayer::initVoiceButton()
-{
-    
-}
-
-void SettingLayer::levelChanged(cocos2d::Object *obj)
-{
-    
-}
-
-void SettingLayer::initLevelButtons()
-{
+void SettingLayer::initLevelButtons() {
     MenuItemImage* playImg = MenuItemImage::create(PIC_RESTART, PIC_RESTART);
     MenuItemImage* pauseImg = MenuItemImage::create(PIC_SETTINGS, PIC_SETTINGS);
-    MenuItemToggle* tog = MenuItemToggle::createWithCallback(CC_CALLBACK_1(SettingLayer::levelChanged,this), pauseImg, playImg,nullptr);
+    MenuItemToggle* tog = MenuItemToggle::createWithCallback(
+                                                             CC_CALLBACK_1(SettingLayer::levelChanged, this), pauseImg, playImg,
+                                                             nullptr);
     //    tog->setSelectedIndex(GameLayer::game_level);
 }
 
-bool SettingLayer::init()
-{
+bool SettingLayer::init() {
     bool ret = false;
     // CCLOG("Setting layer init");
     do {
@@ -56,6 +38,6 @@ bool SettingLayer::init()
         initVoiceButton();
         initLevelButtons();
         ret = true;
-    } while(0);
+    } while (0);
     return ret;
 }

@@ -2,12 +2,16 @@
 #define PkGc_cocos2dx_saveHostage_HOSTAGE_H_
 
 class GameLayer;
+class Hero;
 
 #include "cocos2d.h"
 #include "Hero.h"
 #include "GameLayer.h"
 #include "ImageHelper.h"
 #include "AppDef.h"
+
+using namespace std;
+USING_NS_CC;
 
 class Hostage : public cocos2d::Sprite {
 public:
@@ -17,18 +21,19 @@ public:
     CREATE_FUNC(Hostage);
     void setMyHero(Hero* hero);
     void doAction();
-    void followHero ();
-    void setNextPoint (Point nxtp);
+    void followHero();
+    void setNextPoint(Point nxtp);
     void setTotalClocksNeeded(int clocknum);
     int getTotalClocksNeeded();
     bool isSaved();
     void showProgressTimer();
     void hideProgressTimer();
     void setClockPassed(int clocknum);
-    void setNextDirection (Direction nextDirection);
+    void setNextDirection(Direction nextDirection);
     Direction directionP2P(cocos2d::Point pold, cocos2d::Point pnew);
     void reset();
     void addSaveTimer(GameLayer* gameLayer);
+    
 private:
     Hero* myHero;
     int clock;
@@ -40,4 +45,4 @@ private:
     ProgressTimer* saveProgressTimer;
 };
 
-#endif // end of PkGc_cocos2dx_saveHostage_HERO_H_
+#endif  // end of PkGc_cocos2dx_saveHostage_HERO_H_

@@ -8,13 +8,12 @@ class GameLayer;
 #include "GameLayer.h"
 
 USING_NS_CC;
-class GameEndLayer: public cocos2d::Layer {
+class GameEndLayer : public cocos2d::Layer {
 public:
     GameEndLayer();
     ~GameEndLayer();
     virtual bool init();
-    CREATE_FUNC(GameEndLayer)
-    ;
+    CREATE_FUNC(GameEndLayer);
     
     void setGameEndLayerType(int type);
     void resumeButtonPressed(Object* pSender);

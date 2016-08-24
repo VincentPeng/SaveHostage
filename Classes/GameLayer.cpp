@@ -13,43 +13,39 @@ using namespace std;
 
 #define SIGN 800
 
-#define HERO 30,11
+#define HERO 30, 11
 #define ENEMY 2, 2
 
-#define UNLOCKBT 27,15
-#define JOYSTICK 4,15
+#define UNLOCKBT 27, 15
+#define JOYSTICK 4, 15
 
 #define ROUTENUM 6
-#define HOSTAGE0 1,1
-#define WATCHHOSTAGE0 2,1
-#define HOSTAGE1 1,11
-#define WATCHHOSTAGE1 2,10
-#define HOSTAGE2 20,9
-#define WATCHHOSTAGE2 21,11
-#define HOSTAGE3 20,1
-#define WATCHHOSTAGE3 19,2
-#define HOSTAGE4 12,7
-#define WATCHHOSTAGE4 13,7
+#define HOSTAGE0 1, 1
+#define WATCHHOSTAGE0 2, 1
+#define HOSTAGE1 1, 11
+#define WATCHHOSTAGE1 2, 10
+#define HOSTAGE2 20, 9
+#define WATCHHOSTAGE2 21, 11
+#define HOSTAGE3 20, 1
+#define WATCHHOSTAGE3 19, 2
+#define HOSTAGE4 12, 7
+#define WATCHHOSTAGE4 13, 7
 
 #define TAG_HEALTH 100
 #define TAG_INVISIBLE 101
 #define TAG_SPEED 102
 #define TAG_UNBREAK 103
 
-#define POTION1 16,4
-#define POTION2 6,2
-#define POTION3 7,10
-#define POTION4 17,9
+#define POTION1 16, 4
+#define POTION2 6, 2
+#define POTION3 7, 10
+#define POTION4 17, 9
 
 GameLevel GameLayer::game_level = GameLevel::MORTAL;
 
-GameLayer::GameLayer() {
-    
-}
+GameLayer::GameLayer() {}
 
-GameLayer::~GameLayer() {
-    
-}
+GameLayer::~GameLayer() {}
 
 void GameLayer::resetGameLayer() {
     map<Direction, vector<Rect>> rectsMap =
@@ -65,9 +61,7 @@ void GameLayer::resetGameLayer() {
     heroHealthBarTimer->setPercentage(100);
 }
 
-void GameLayer::restartGame() {
-    resetGameLayer();
-}
+void GameLayer::restartGame() { resetGameLayer(); }
 
 void GameLayer::resumeGmame() {
     GameSuspended = false;
@@ -116,8 +110,8 @@ void GameLayer::initGameControls() {
     gameSticker->setDelegate(this);
     this->addChild(gameSticker, 2);
     
-    saveBtn = MenuItemImage::create("key.png", "key2.png",
-                                    CC_CALLBACK_1(GameLayer::saveBtnPressed, this));
+    saveBtn = MenuItemImage::create(
+                                    "key.png", "key2.png", CC_CALLBACK_1(GameLayer::saveBtnPressed, this));
     Menu* pMenu = Menu::create(saveBtn, NULL);
     pMenu->setPosition(tileCoordinate2Pixel(Point(UNLOCKBT)));
     this->addChild(pMenu, 2);
@@ -190,7 +184,6 @@ void GameLayer::loadCharactorAndScene() {
     hostages.push_back(_hostage3);
     hostages.push_back(_hostage4);
     
-    
     hostagesWatch.push_back(Point(WATCHHOSTAGE0));
     hostagesWatch.push_back(Point(WATCHHOSTAGE1));
     hostagesWatch.push_back(Point(WATCHHOSTAGE2));
@@ -236,26 +229,28 @@ void GameLayer::loadCharactorAndScene() {
     
     pauseBtn = MenuItemImage::create(PIC_PAUSE, PIC_PAUSE_PRESSED,
                                      CC_CALLBACK_1(GameLayer::pausedGame, this));
-    Menu* menu = Menu::create(pauseBtn,NULL);
-    menu->setPosition(600,45);
-    this->addChild(menu,7);
+    Menu* menu = Menu::create(pauseBtn, NULL);
+    menu->setPosition(600, 45);
+    this->addChild(menu, 7);
     
     MenuItemImage* soundOnBtn = MenuItemImage::create(PIC_SOUND_ON, PIC_SOUND_ON);
-    MenuItemImage* soundOffBtn = MenuItemImage::create(PIC_SOUND_OFF, PIC_SOUND_OFF);
+    MenuItemImage* soundOffBtn =
+    MenuItemImage::create(PIC_SOUND_OFF, PIC_SOUND_OFF);
     
-    MenuItemToggle* toggle = MenuItemToggle::createWithCallback(CC_CALLBACK_1(GameLayer::soundSwitch,this), soundOnBtn, soundOffBtn, NULL);
+    MenuItemToggle* toggle = MenuItemToggle::createWithCallback(
+                                                                CC_CALLBACK_1(GameLayer::soundSwitch, this), soundOnBtn, soundOffBtn,
+                                                                NULL);
     Menu* menu1 = Menu::create();
     menu1->addChild(toggle);
-    menu1->setPosition(550,45);
-    addChild(menu1,7);
-    
+    menu1->setPosition(550, 45);
+    addChild(menu1, 7);
 }
 
 void GameLayer::saveBtnPressed(Object* pSender) {
     CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect(EFCT_UNLOCK1);
 }
 
-void GameLayer::onJoyStickUpdate(Node*sender, float angle, Point direction,
+void GameLayer::onJoyStickUpdate(Node* sender, float angle, Point direction,
                                  float power) {
     if (!joyStickerEnabled) {
         return;
@@ -269,9 +264,8 @@ Point GameLayer::convertCoordinate2Pixel(int x, int y, int mapHeight) {
 void GameLayer::checkSaveButton() {
     int i = 0;
     for (; i < hostages.size(); i++) {
-        if (!hostages[i]->isSaved()
-            && distance(hostages[i]->getPosition(), _hero->getPosition())
-            < 40.0) {
+        if (!hostages[i]->isSaved() &&
+            distance(hostages[i]->getPosition(), _hero->getPosition()) < 40.0) {
             saveBtn->setEnabled(true);
             break;
         }
@@ -287,15 +281,13 @@ void GameLayer::checkSaveButton() {
             return;
         }
         for (; i < hostages.size(); i++) {
-            if (!hostages[i]->isSaved()
-                && distance(hostages[i]->getPosition(),
-                            _hero->getPosition()) < 40.0) {
-                    _hero->setCurrentHostage(hostages[i]);
-                    _hero->setTargetSavingClocks(
-                                                 hostages[i]->getTotalClocksNeeded());
-                    hostages[i]->showProgressTimer();
-                    break;
-                }
+            if (!hostages[i]->isSaved() &&
+                distance(hostages[i]->getPosition(), _hero->getPosition()) < 40.0) {
+                _hero->setCurrentHostage(hostages[i]);
+                _hero->setTargetSavingClocks(hostages[i]->getTotalClocksNeeded());
+                hostages[i]->showProgressTimer();
+                break;
+            }
         }
     } else {
         if (_hero->getCurrentHostage())
@@ -359,7 +351,6 @@ void GameLayer::checkJoysticker() {
 void GameLayer::checkGameEnded() {
     int endType = 0;
     if (_hero->isDead()) {
-        
         GameSuspended = true;
         endType = 0;
     } else if (_hero->getCurrentNode() == Point(30, 1)) {
@@ -400,14 +391,13 @@ void GameLayer::update(float dt) {
             _hero->setCurBuff(Buff::NONE);
         }
     }
-    if (_hero->getPosition() == tileCoordinate2Pixel(Point(POTION1))
-        || _hero->getPosition() == tileCoordinate2Pixel(Point(POTION2))
-        || _hero->getPosition() == tileCoordinate2Pixel(Point(POTION3))
-        || _hero->getPosition() == tileCoordinate2Pixel(Point(POTION4))) {
+    if (_hero->getPosition() == tileCoordinate2Pixel(Point(POTION1)) ||
+        _hero->getPosition() == tileCoordinate2Pixel(Point(POTION2)) ||
+        _hero->getPosition() == tileCoordinate2Pixel(Point(POTION3)) ||
+        _hero->getPosition() == tileCoordinate2Pixel(Point(POTION4))) {
         Point hpoint = _hero->getPosition();
         for (int i = 0; i < potions.size(); i++) {
-            if (potions[i]->isVisible()
-                && potions[i]->getPosition() == hpoint) {
+            if (potions[i]->isVisible() && potions[i]->getPosition() == hpoint) {
                 int tag = potions[i]->getTag();
                 switch (tag) {
                     case TAG_HEALTH:
@@ -435,7 +425,6 @@ void GameLayer::update(float dt) {
                 break;
             }
         }
-        
     }
     _enemy->doAction();
     for (int i = 0; i < hostages.size(); i++) {
@@ -445,15 +434,15 @@ void GameLayer::update(float dt) {
 
 Point GameLayer::tileCoordinate(float x, float y) {
     int newx = x / _map->getTileSize().width;
-    int newy = (_map->getMapSize().height * _map->getTileSize().height - y)
-    / _map->getTileSize().height;
+    int newy = (_map->getMapSize().height * _map->getTileSize().height - y) /
+    _map->getTileSize().height;
     return Point(newx, newy);
 }
 
 Point GameLayer::tileCoordinate(Point p) {
     int newx = p.x / _map->getTileSize().width;
-    int newy = (_map->getMapSize().height * _map->getTileSize().height - p.y)
-    / _map->getTileSize().height;
+    int newy = (_map->getMapSize().height * _map->getTileSize().height - p.y) /
+    _map->getTileSize().height;
     return Point(newx, newy);
 }
 
@@ -494,12 +483,9 @@ bool GameLayer::canGo(Point p) {
     }
     
     return ret;
-    
 }
 
-void GameLayer::onWalk(int direction) {
-    
-}
+void GameLayer::onWalk(int direction) {}
 
 void GameLayer::onStop() {
     // CCLOG("GameLayer onStop");
@@ -507,26 +493,27 @@ void GameLayer::onStop() {
 }
 
 /**
- *  Function that can check whether the State should change, depends on the Final State Machine.
+ *  Function that can check whether the State should change, depends on the
+ * Final State Machine.
  */
 void GameLayer::checkNewEvent() {
     checkGameEnded();
     int dist = distance(_hero->getPosition(), _enemy->getPosition());
-    vector<Point>* directPath = getStraightPath(
-                                                tileCoordinate(_enemy->getPosition()),
-                                                tileCoordinate(_hero->getPosition()));
+    vector<Point>* directPath =
+    getStraightPath(tileCoordinate(_enemy->getPosition()),
+                    tileCoordinate(_hero->getPosition()));
     bool stateChanged = false;
     
     switch (_enemy->getState()) {
         case State::IDLE:
             // path is fixed, generated by generator
-            if (directPath != NULL) { // no direct path
-                if (_enemy->canAttack(_hero)) { // enter attack state
+            if (directPath != NULL) {          // no direct path
+                if (_enemy->canAttack(_hero)) {  // enter attack state
                     LOGV("checkNewEvent: IDLE -> ATTACK state");
                     stateChanged = true;
                     _enemy->setState(State::ATTACK);
                     break;
-                } else if (_enemy->canSee(_hero)) { // enter alert state
+                } else if (_enemy->canSee(_hero)) {  // enter alert state
                     LOGV("checkNewEvent: IDLE -> ALERT state");
                     stateChanged = true;
                     _enemy->setState(State::ALERT);
@@ -536,41 +523,44 @@ void GameLayer::checkNewEvent() {
             break;
         case State::ALERT:
             // path is dynamic, straight line
-            if (directPath == NULL || !_enemy->canSee(_hero)) { // no direct path or cannot see
+            if (directPath == NULL ||
+                !_enemy->canSee(_hero)) {  // no direct path or cannot see
                 LOGV("checkNewEvent: ALERT -> LOST state");
                 stateChanged = true;
                 _enemy->setState(State::LOST);
-            } else if (_enemy->canAttack(_hero)) { // enter attack state
+            } else if (_enemy->canAttack(_hero)) {  // enter attack state
                 LOGV("checkNewEvent: ALERT -> ATTACK state");
                 stateChanged = true;
                 _enemy->setState(State::ATTACK);
-            } else { // maintain current state and recalculate the path.
+            } else {  // maintain current state and recalculate the path.
                 recalculatePath(directPath);
             }
             break;
         case State::ATTACK:
             // path is dynamic, straight line
-            if (directPath == NULL || !_enemy->canSee(_hero)) { // no direct path or cannot see
+            if (directPath == NULL ||
+                !_enemy->canSee(_hero)) {  // no direct path or cannot see
                 LOGV("checkNewEvent: ATTACK -> LOST state");
                 stateChanged = true;
                 _enemy->setState(State::LOST);
-            } else if (!_enemy->canAttack(_hero)) { // can see but cannot attack, enter alert state
+            } else if (!_enemy->canAttack(
+                                          _hero)) {  // can see but cannot attack, enter alert state
                 LOGV("checkNewEvent: ATTACK -> ALERT state");
                 stateChanged = true;
                 _enemy->setState(State::ALERT);
-            } else { // maintain current state and recalculate the path.
+            } else {  // maintain current state and recalculate the path.
                 recalculatePath(directPath);
             }
             break;
         case State::LOST:
             // path is fixed, straight line
-            if (directPath != NULL) { // have direct path
+            if (directPath != NULL) {  // have direct path
                 if (_enemy->canAttack(_hero)) {
                     LOGV("checkNewEvent: LOST -> ATTACK state");
                     stateChanged = true;
                     _enemy->setState(State::ATTACK);
                     break;
-                } else if (_enemy->canSee(_hero)) { // enter alert state
+                } else if (_enemy->canSee(_hero)) {  // enter alert state
                     LOGV("checkNewEvent: LOST -> ALERT state");
                     stateChanged = true;
                     _enemy->setState(State::ALERT);
@@ -584,30 +574,31 @@ void GameLayer::checkNewEvent() {
             break;
         case State::LOOKAROUND:
             // path is fixed, generated by generator
-            //TODO: search the hero for a while, if no new events happen in timeout, go into INSPECT
+            // TODO: search the hero for a while, if no new events happen in timeout,
+            // go into INSPECT
             break;
         case State::INSPECT:
-            if (directPath != NULL) { // have direct path
+            if (directPath != NULL) {  // have direct path
                 if (_enemy->canAttack(_hero)) {
                     LOGV("checkNewEvent: INSPECT -> ATTACK state");
                     stateChanged = true;
                     _enemy->setState(State::ATTACK);
                     break;
-                } else if (_enemy->canSee(_hero)) { // enter alert state
+                } else if (_enemy->canSee(_hero)) {  // enter alert state
                     LOGV("checkNewEvent: INSPECT -> ALERT state");
                     stateChanged = true;
                     _enemy->setState(State::ALERT);
                     break;
                 }
             }
-            if (tileCoordinate(_enemy->getInspectTarget())
-                == tileCoordinate(_enemy->getPosition())) { // already return to hostage stop, begin IDLE state
+            if (tileCoordinate(_enemy->getInspectTarget()) ==
+                tileCoordinate(_enemy->getPosition())) {  // already return to hostage
+                // stop, begin IDLE state
                 LOGV("checkNewEvent: INSPECT -> IDLE state");
                 stateChanged = true;
                 int i;
                 for (i = 0; i < hostagesWatch.size(); i++) {
-                    if (hostagesWatch[i]
-                        == tileCoordinate(_enemy->getInspectTarget())) {
+                    if (hostagesWatch[i] == tileCoordinate(_enemy->getInspectTarget())) {
                         break;
                     }
                 }
@@ -630,10 +621,10 @@ void GameLayer::checkNewEvent() {
 }
 
 int GameLayer::distance(Point a, Point b) {
-    int x = (int) (a.x - b.x);
-    int y = (int) (a.y - b.y);
+    int x = (int)(a.x - b.x);
+    int y = (int)(a.y - b.y);
     
-    return (int) sqrt(x * x + y * y);
+    return (int)sqrt(x * x + y * y);
 }
 
 // get the path from A to B if there is no block between them,
@@ -654,7 +645,7 @@ vector<Point>* GameLayer::getStraightPath(Point from, Point to) {
             from.y > to.y ? step = -1 : step = 1;
             for (int i = from.y + step; i != to.y; i += step) {
                 x = (i - b) / k;
-                if (x - (int) x <= 0.5) {
+                if (x - (int)x <= 0.5) {
                     // (int(x),i) and (int(x)-1,i) will be check
                     if (!canGo(Point(int(x), i))) {
                         return NULL;
@@ -685,20 +676,17 @@ vector<Point>* GameLayer::getStraightPath(Point from, Point to) {
                     path->push_back(tileCoordinate2Pixel(Point(i, int(y) + 1)));
                 }
             }
-            
         }
     } else if (from.x == to.x) {
         from.y <= to.y ? step = 1 : step = -1;
         for (int i = from.y + step; i != to.y; i += step) {
-            if (!canGo(Point(from.x, i)))
-                return NULL;
+            if (!canGo(Point(from.x, i))) return NULL;
             path->push_back(tileCoordinate2Pixel(Point(from.x, i)));
         }
-    } else { // from.y == to.y
+    } else {  // from.y == to.y
         from.x <= to.x ? step = 1 : step = -1;
         for (int i = from.x + step; i != to.x; i += step) {
-            if (!canGo(Point(i, from.y)))
-                return NULL;
+            if (!canGo(Point(i, from.y))) return NULL;
             path->push_back(tileCoordinate2Pixel(Point(i, from.y)));
         }
     }
@@ -727,7 +715,8 @@ void GameLayer::recalculatePath(vector<Point>* directPath) {
             // path is fixed, straight line
             break;
         case State::LOOKAROUND:
-            //TODO: search the hero for a while, if no new events happen in timeout, go into INSPECT
+            // TODO: search the hero for a while, if no new events happen in timeout,
+            // go into INSPECT
             break;
         case State::INSPECT:
             // go to the nearest hostage
@@ -744,8 +733,7 @@ void GameLayer::recalculatePath(vector<Point>* directPath) {
             }
             
             _enemy->setInspectTarget((*path)[path->size() - 1]);
-            LOGV(
-                 "%f %f", _enemy->getInspectTarget().x, _enemy->getInspectTarget().y);
+            LOGV("%f %f", _enemy->getInspectTarget().x, _enemy->getInspectTarget().y);
             _enemy->setPath(*path);
             _enemy->takeAction();
             break;
@@ -767,7 +755,6 @@ void GameLayer::changeSpeed() {
         default:
             _enemy->useNormalSpeed();
             break;
-            
     }
 }
 
@@ -786,7 +773,8 @@ void GameLayer::changeSign() {
             _enemysign = Sprite::create("state_lost.png");
             break;
         case State::LOOKAROUND:
-            //TODO: search the hero for a while, if no new events happen in timeout, go into INSPECT
+            // TODO: search the hero for a while, if no new events happen in timeout,
+            // go into INSPECT
             _enemysign = Sprite::create("state_lookaround.png");
             break;
         case State::INSPECT:
@@ -800,22 +788,21 @@ void GameLayer::changeSign() {
 }
 
 vector<vector<Point>> GameLayer::generateLoop() {
-    vector < vector < Point >> loopRoute;
-    vector<Point>* path0 =
-    PathGenerator::sharePathGenerator(_map)->generatePath(
-                                                          Point(WATCHHOSTAGE0), Point(WATCHHOSTAGE1));
+    vector<vector<Point>> loopRoute;
+    vector<Point>* path0 = PathGenerator::sharePathGenerator(_map)->generatePath(
+                                                                                 Point(WATCHHOSTAGE0), Point(WATCHHOSTAGE1));
     loopRoute.push_back(*path0);
-    path0 = PathGenerator::sharePathGenerator(_map)->generatePath(
-                                                                  Point(WATCHHOSTAGE1), Point(WATCHHOSTAGE2));
+    path0 = PathGenerator::sharePathGenerator(_map)
+    ->generatePath(Point(WATCHHOSTAGE1), Point(WATCHHOSTAGE2));
     loopRoute.push_back(*path0);
-    path0 = PathGenerator::sharePathGenerator(_map)->generatePath(
-                                                                  Point(WATCHHOSTAGE2), Point(WATCHHOSTAGE3));
+    path0 = PathGenerator::sharePathGenerator(_map)
+    ->generatePath(Point(WATCHHOSTAGE2), Point(WATCHHOSTAGE3));
     loopRoute.push_back(*path0);
-    path0 = PathGenerator::sharePathGenerator(_map)->generatePath(
-                                                                  Point(WATCHHOSTAGE3), Point(WATCHHOSTAGE4));
+    path0 = PathGenerator::sharePathGenerator(_map)
+    ->generatePath(Point(WATCHHOSTAGE3), Point(WATCHHOSTAGE4));
     loopRoute.push_back(*path0);
-    path0 = PathGenerator::sharePathGenerator(_map)->generatePath(
-                                                                  Point(WATCHHOSTAGE4), Point(WATCHHOSTAGE0));
+    path0 = PathGenerator::sharePathGenerator(_map)
+    ->generatePath(Point(WATCHHOSTAGE4), Point(WATCHHOSTAGE0));
     loopRoute.push_back(*path0);
     return loopRoute;
 }
@@ -825,9 +812,10 @@ void GameLayer::pausedGame(Object* pSender) {
     Director::getInstance()->pause();
     Size sz = Director::getInstance()->getWinSize();
     
-    RenderTexture* rendertexture =  RenderTexture::create(sz.width, sz.height);
+    RenderTexture* rendertexture = RenderTexture::create(sz.width, sz.height);
     
-    //    // An object that has not been addChild needs to be retain, otherwise it will be auto released.
+    //    // An object that has not been addChild needs to be retain, otherwise it
+    //    will be auto released.
     rendertexture->retain();
     Scene* sene = Director::getInstance()->getRunningScene();
     rendertexture->begin();
@@ -835,12 +823,13 @@ void GameLayer::pausedGame(Object* pSender) {
     rendertexture->end();
     GameEndLayer* geLayer = GameEndLayer::getLayerWithTexture(rendertexture);
     geLayer->setParentGameLayer(this);
-    addChild(geLayer,9999);
+    addChild(geLayer, 9999);
 }
 
 void GameLayer::soundSwitch(Object* obj) {
     LOGV("soundSwitch");
-    if(CocosDenshion::SimpleAudioEngine::sharedEngine()->isBackgroundMusicPlaying()) {
+    if (CocosDenshion::SimpleAudioEngine::sharedEngine()
+        ->isBackgroundMusicPlaying()) {
         CocosDenshion::SimpleAudioEngine::sharedEngine()->pauseBackgroundMusic();
     } else {
         CocosDenshion::SimpleAudioEngine::sharedEngine()->resumeBackgroundMusic();

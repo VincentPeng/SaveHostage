@@ -1,3 +1,4 @@
+
 //
 //
 //  SaveHostage
@@ -8,11 +9,9 @@
 
 #include "enemy.h"
 
-Enemy::Enemy() {
-}
+Enemy::Enemy() {}
 
-Enemy::~Enemy() {
-}
+Enemy::~Enemy() {}
 
 int Enemy::lookaround_clock = 3;
 
@@ -33,44 +32,27 @@ void Enemy::reset() {
     this->setSign(Sprite::create(PIC_ENEMY_IDLE));
     setTexture(PIC_ENEMY_SET);
     curDirection = Direction::DOWN;
-    setTextureRect(ImageHelper::sharedImageHelper()->getWalkAnimationsRects()[curDirection][1]);
+    setTextureRect(ImageHelper::sharedImageHelper()
+                   ->getWalkAnimationsRects()[curDirection][1]);
 }
 
-int Enemy::getAtkRange() {
-    return atkRange;
-}
+int Enemy::getAtkRange() { return atkRange; }
 
-void Enemy::setAtkRange(int atkRange) {
-    this->atkRange = atkRange;
-}
+void Enemy::setAtkRange(int atkRange) { this->atkRange = atkRange; }
 
-int Enemy::getDamage() {
-    return damage;
-}
+int Enemy::getDamage() { return damage; }
 
-void Enemy::setDamage(int damage) {
-    this->damage = damage;
-}
+void Enemy::setDamage(int damage) { this->damage = damage; }
 
-int Enemy::getSpeed() {
-    return speed;
-}
+int Enemy::getSpeed() { return speed; }
 
-void Enemy::setSpeed(int speed) {
-    this->speed = speed;
-}
+void Enemy::setSpeed(int speed) { this->speed = speed; }
 
-int Enemy::getVisionRange() {
-    return visionRange;
-}
+int Enemy::getVisionRange() { return visionRange; }
 
-void Enemy::setVisionRange(int visionRange) {
-    this->visionRange = visionRange;
-}
+void Enemy::setVisionRange(int visionRange) { this->visionRange = visionRange; }
 
-void Enemy::setPath(vector<Point> newpath) {
-    this->epath = newpath;
-}
+void Enemy::setPath(vector<Point> newpath) { this->epath = newpath; }
 
 void Enemy::setLoopRoute(vector<vector<Point>> route) {
     this->loopRoute = route;
@@ -78,8 +60,7 @@ void Enemy::setLoopRoute(vector<vector<Point>> route) {
 
 void Enemy::doAction() {
     clock++;
-    if (clock % speed != 0)
-        return;
+    if (clock % speed != 0) return;
     clock = 0;
     if (curState == State::ATTACK) {
         shoot();
@@ -128,24 +109,19 @@ void Enemy::walk() {
         curDirection = directionP2P(epath[curIndex], epath[curIndex + 1]);
         if (curDirection != STOP) {
             setTextureRect(
-                           ImageHelper::sharedImageHelper()->getWalkAnimationsRects()[curDirection][curIndex
-                                                                                                    % 4]);
+                           ImageHelper::sharedImageHelper()
+                           ->getWalkAnimationsRects()[curDirection][curIndex % 4]);
         }
     }
     
-    FiniteTimeAction* actionMove = MoveTo::create((float) 1 / FPS * getSpeed(),
-                                                  epath[curIndex++]);
+    FiniteTimeAction* actionMove =
+    MoveTo::create((float)1 / FPS * getSpeed(), epath[curIndex++]);
     runAction(Sequence::create(actionMove, NULL));
-    
 }
 
-State Enemy::getState() {
-    return curState;
-}
+State Enemy::getState() { return curState; }
 
-void Enemy::setState(State state) {
-    curState = state;
-}
+void Enemy::setState(State state) { curState = state; }
 
 void Enemy::takeAction() {
     curIndex = 0;
@@ -156,22 +132,16 @@ void Enemy::takeAction() {
     }
 }
 
-void Enemy::hangAround() {
-    
-}
+void Enemy::hangAround() {}
 
-void Enemy::alerting() {
-    
-}
+void Enemy::alerting() {}
 
 void Enemy::shoot() {
     CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect(EFCT_SHOOT);
     this->target->attackedBy(getDamage());
 }
 
-void Enemy::toMissingPoint() {
-    
-}
+void Enemy::toMissingPoint() {}
 
 void Enemy::setSign(Sprite* sign) {
     this->removeAllChildren();
@@ -179,10 +149,7 @@ void Enemy::setSign(Sprite* sign) {
     sign->setPosition(Point(1 * BLKWIDTH, 2.5 * BLKWIDTH));
 }
 
-bool Enemy::ifStoped() {
-    
-    return curIndex >= epath.size();
-}
+bool Enemy::ifStoped() { return curIndex >= epath.size(); }
 
 void Enemy::initialIdleMove() {
     int size = loopRoute.size();
@@ -198,56 +165,42 @@ void Enemy::idleMoveFrom(int index) {
 }
 
 bool Enemy::canSee(Hero* ob) {
-    if (!ob->ifInvisible()
-        && distance(this->getPosition(), ob->getPosition()) <= visionRange
-        && ifVisibleAngle(ob->getPosition())) {
+    if (!ob->ifInvisible() &&
+        distance(this->getPosition(), ob->getPosition()) <= visionRange &&
+        ifVisibleAngle(ob->getPosition())) {
         return true;
     }
     return false;
 }
 
 bool Enemy::canAttack(Hero* ob) {
-    if (!ob->ifUnbreak() && !ob->ifInvisible()
-        && distance(this->getPosition(), ob->getPosition()) <= atkRange) {
+    if (!ob->ifUnbreak() && !ob->ifInvisible() &&
+        distance(this->getPosition(), ob->getPosition()) <= atkRange) {
         return true;
     }
     return false;
 }
 
-int Enemy::getNormalSpeed() {
-    return normalSpeed;
-}
+int Enemy::getNormalSpeed() { return normalSpeed; }
 
-void Enemy::setNormalSpeed(int normalSpeed) {
-    this->normalSpeed = normalSpeed;
-}
+void Enemy::setNormalSpeed(int normalSpeed) { this->normalSpeed = normalSpeed; }
 
-void Enemy::useNormalSpeed() {
-    this->speed = normalSpeed;
-}
+void Enemy::useNormalSpeed() { this->speed = normalSpeed; }
 
-void Enemy::useHighSpeed() {
-    this->speed = normalSpeed * 0.5;
-}
+void Enemy::useHighSpeed() { this->speed = normalSpeed * 0.5; }
 
 int Enemy::distance(Point a, Point b) {
-    int x = (int) (a.x - b.x);
-    int y = (int) (a.y - b.y);
+    int x = (int)(a.x - b.x);
+    int y = (int)(a.y - b.y);
     
-    return (int) sqrt(x * x + y * y);
+    return (int)sqrt(x * x + y * y);
 }
 
-Hero* Enemy::getTarget() {
-    return target;
-}
+Hero* Enemy::getTarget() { return target; }
 
-void Enemy::setTarget(Hero* target) {
-    this->target = target;
-}
+void Enemy::setTarget(Hero* target) { this->target = target; }
 
-Point Enemy::getInspectTarget() {
-    return inspectTarget;
-}
+Point Enemy::getInspectTarget() { return inspectTarget; }
 
 void Enemy::setInspectTarget(Point inspectTarget) {
     this->inspectTarget = inspectTarget;
@@ -321,19 +274,14 @@ bool Enemy::ifVisibleAngle(Point target) {
     Point targetp = parentLayer->tileCoordinate(target);
     float x2 = (targetp.x - myp.x);
     float y2 = (targetp.y - myp.y);
-    return ((x1 * x2 + y1 * y2)
-            / (sqrt(x1 * x1 + y1 * y1) * sqrt(x2 * x2 + y2 * y2))) >= 0;
+    return ((x1 * x2 + y1 * y2) /
+            (sqrt(x1 * x1 + y1 * y1) * sqrt(x2 * x2 + y2 * y2))) >= 0;
 }
 
-Direction Enemy::getCurDirection() {
-    return curDirection;
-}
+Direction Enemy::getCurDirection() { return curDirection; }
 
 void Enemy::setCurDirection(Direction curDirection) {
     this->curDirection = curDirection;
 }
 
-void Enemy::setParentLayer(GameLayer* layer) {
-    parentLayer = layer;
-}
-
+void Enemy::setParentLayer(GameLayer* layer) { parentLayer = layer; }

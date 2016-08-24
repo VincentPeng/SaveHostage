@@ -6,7 +6,6 @@ class Hostage;
 #include "cocos2d.h"
 #include "EnumUtil.h"
 #include "TileNode.h"
-//#include "Hostage.h"
 #include <vector>
 #include <queue>
 #include <deque>
@@ -56,7 +55,6 @@ public:
     int getBufftime();
     void setBufftime(int bufftime);
     
-    
 private:
     int speed;
     int health;
@@ -80,4 +78,4 @@ private:
     bool speedChange;
 };
 
-#endif // end of PkGc_cocos2dx_saveHostage_HERO_H_
+#endif  // end of PkGc_cocos2dx_saveHostage_HERO_H_

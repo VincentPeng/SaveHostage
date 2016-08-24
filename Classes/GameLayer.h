@@ -18,8 +18,7 @@
 
 USING_NS_CC;
 
-class GameLayer: public cocos2d::Layer, public JoyStickDelegate
-{
+class GameLayer : public cocos2d::Layer, public JoyStickDelegate {
 public:
     GameLayer();
     ~GameLayer();
@@ -33,10 +32,10 @@ public:
     Point tileCoordinate(float x, float y);
     Point tileCoordinate(Point p);
     Point tileCoordinate2Pixel(Point point);
-    Point convertCoordinate2Pixel (int x, int y, int mapHeight);
+    Point convertCoordinate2Pixel(int x, int y, int mapHeight);
     void saveBtnPressed(CCObject* pSender);
     void toggleBtnPressed(Object* pSender);
-    virtual void onJoyStickUpdate(Node*sender, float angle, Point direction,
+    virtual void onJoyStickUpdate(Node* sender, float angle, Point direction,
                                   float power);
     
     void onWalk(int direction);
@@ -99,4 +98,4 @@ private:
     MenuItemImage* pauseBtn;
 };
 
-#endif // end of PkGc_cocos2d_saveHostage_GAMELAYER_H_
+#endif  // end of PkGc_cocos2d_saveHostage_GAMELAYER_H_

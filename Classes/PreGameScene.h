@@ -15,13 +15,9 @@
 
 USING_NS_CC;
 
-class PreGameScene : public Scene
-{
+class PreGameScene : public Scene {
 private:
-    
-    
 public:
-    
     PreGameScene();
     ~PreGameScene();
     virtual bool init();

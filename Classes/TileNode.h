@@ -13,8 +13,7 @@
 
 #define BLKWIDTH 30.0
 
-class TileNode
-{
+class TileNode {
 private:
     int A_F;
     int A_H;
@@ -22,6 +21,7 @@ private:
     int P_X;
     int P_Y;
     TileNode* parent;
+    
 public:
     TileNode();
     

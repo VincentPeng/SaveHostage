@@ -13,7 +13,7 @@
 #include "GameLayer.h"
 
 USING_NS_CC;
-class SettingLayer : public cocos2d::Layer{
+class SettingLayer : public cocos2d::Layer {
 public:
     SettingLayer();
     ~SettingLayer();
@@ -23,11 +23,9 @@ public:
     void initLevelButtons();
     CREATE_FUNC(SettingLayer);
     
-    void levelChanged (Object* obj);
+    void levelChanged(Object* obj);
     
 private:
-    
-    
 };
 
 #endif /* defined(__SaveHostage__SettingLayer__) */

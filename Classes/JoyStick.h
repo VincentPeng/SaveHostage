@@ -11,30 +11,26 @@
 
 #include "cocos2d.h"
 
-#define winSize  Director::getInstance()->getWinSize()
+#define winSize Director::getInstance()->getWinSize()
 
 using namespace std;
 USING_NS_CC;
 
 class JoyStick;
 
-//JoyStick的代理类
-class JoyStickDelegate
-{
+// JoyStick Agent
+class JoyStickDelegate {
 public:
-    
-    virtual void onJoyStickUpdate(Node*sender,float angle,Point direction,float power) =0;
-    
+    virtual void onJoyStickUpdate(Node *sender, float angle, Point direction,
+                                  float power) = 0;
 };
 
-class JoyStick:public Sprite
-{
+class JoyStick : public Sprite {
 private:
-    
-    CC_SYNTHESIZE(Sprite *, Ball, bBall); //更随手势转动的球
-    CC_SYNTHESIZE(Sprite *, Dock, dDock); //底座
-    CC_SYNTHESIZE(int, MoveAreaRadius, mMoveAreaRadius); //移动半径
-    CC_SYNTHESIZE(int, BallRadius, bBallRadius); //球半径
+    CC_SYNTHESIZE(Sprite *, Ball, bBall);  // The ball follows touch movement
+    CC_SYNTHESIZE(Sprite *, Dock, dDock);  // The stick base pad
+    CC_SYNTHESIZE(int, MoveAreaRadius, mMoveAreaRadius);  // Movement radius
+    CC_SYNTHESIZE(int, BallRadius, bBallRadius);          // Ball radius
     CC_SYNTHESIZE(Rect, ActiveRect, aActiveRect);
     CC_SYNTHESIZE(int, ActiveRadius, aActiveRadius);
     CC_SYNTHESIZE(Point, CurrentPoint, cCurrentPoint);
@@ -47,28 +43,21 @@ private:
     CC_SYNTHESIZE(float, Angle, aAngle);
     CC_SYNTHESIZE(Point, Direction, dDirection);
     
-    CC_SYNTHESIZE(JoyStickDelegate*, _delegate, Delegate);//代理
+    CC_SYNTHESIZE(JoyStickDelegate *, _delegate, Delegate);  // Agent
     
 public:
-    //   自定义实例函数
-    static JoyStick * createJoyStick(const string&dockName,const string&ballName,int ballradius,int movearearadius,bool isfollowtouch,bool iscanvisible,bool isautohide,bool hasanimation);
-    /**********
-     函数参数说明：
-     1.参数dockName :底座背景图名称
-     2.参数ballName :旋转球名称
-     3.参数ballradius :旋转球的半径
-     4.参数movearearadius :旋转球活动半径
-     5.参数isfollowtouch :是否跟随触摸
-     6.参数iscanvisible  :是否可见
-     7.参数isautohide ：是否自动隐藏（即用户没有操作英雄时，隐藏操作键）
-     8.参数hasanimation ：是否带动画
-     
-     **********/
+    static JoyStick *createJoyStick(const string &dockName,
+                                    const string &ballName, int ballradius,
+                                    int movearearadius, bool isfollowtouch,
+                                    bool iscanvisible, bool isautohide,
+                                    bool hasanimation);
     
-    void initWithBallRadius(int ballradius,int movearearadius,bool isfollowtouch,bool iscanvisible,bool isautohide,bool hasanimation) ;
+    void initWithBallRadius(int ballradius, int movearearadius,
+                            bool isfollowtouch, bool iscanvisible,
+                            bool isautohide, bool hasanimation);
     
-    void setBallTexture(const string&imageName);
-    void setDockTexture(const string&imageName);
+    void setBallTexture(const string &imageName);
+    void setDockTexture(const string &imageName);
     
     void setHitAreaWithRadius(int radius);
     void setHitAreaWithRect(Rect rect);
@@ -77,15 +66,13 @@ public:
     void timerUpdate(float dt);
     void myTouchBegan(Point touchPoint);
     void resetTexturePosition();
-    bool containsTouchLocation(Touch *touch) ;
+    bool containsTouchLocation(Touch *touch);
     void updateTouchPoint(Point touchPoint);
     virtual bool onTouchBegan(Touch *touch, cocos2d::Event *unused_event);
     virtual void onTouchMoved(Touch *touch, cocos2d::Event *unused_event);
     virtual void onTouchEnded(Touch *touch, cocos2d::Event *unused_event);
     virtual void onEnter();
     virtual void onExit();
-    
-    
 };
 
 #endif /* defined(__JoyStick__H_H) */

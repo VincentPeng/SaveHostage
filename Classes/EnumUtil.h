@@ -1,13 +1,13 @@
 #ifndef PkGc_cocos2d_saveHostage_ENUMUTIL_H_
 #define PkGc_cocos2d_saveHostage_ENUMUTIL_H_
 
-#define FPS                 60
-#define ENEMYSPEED          20      //how many steps to cover a block disance
-#define HOSTAGESPEED        20
-#define SAVINGCLOCKSNEEDED  100
-#define TILESIZE            64
-#define WIDTH_CENTER            240
-#define HEIGHT_CENTER            160
+#define FPS 60
+#define ENEMYSPEED 20  // how many steps to cover a block disance
+#define HOSTAGESPEED 20
+#define SAVINGCLOCKSNEEDED 100
+#define TILESIZE 64
+#define WIDTH_CENTER 240
+#define HEIGHT_CENTER 160
 
 #define ENEMYSPEED_H 20
 #define ENEMYSPEED_M 25
@@ -55,24 +55,14 @@
 #define PIC_ENEMY_SET "enemyset.png"
 #define PIC_ENEMY_IDLE "state_idle.png"
 
-#define BUFFTIME 800    // 60 -> 1s
-enum State {
-    IDLE, ALERT, ATTACK, LOST, LOOKAROUND, INSPECT
-};
-enum Event {
-    FOUND_TARGET, LOST_TARGET, REACH_MISSPOINT, HOSTAGE_SECURE
-};
+#define BUFFTIME 800  // 60 -> 1s
+enum State { IDLE, ALERT, ATTACK, LOST, LOOKAROUND, INSPECT };
+enum Event { FOUND_TARGET, LOST_TARGET, REACH_MISSPOINT, HOSTAGE_SECURE };
 
-enum Direction {
-    STOP, UP, DOWN, LEFT, RIGHT, UL, UR, DL, DR
-};
+enum Direction { STOP, UP, DOWN, LEFT, RIGHT, UL, UR, DL, DR };
 
-enum GameLevel {
-    HEAVEN, MORTAL, HELL
-};
+enum GameLevel { HEAVEN, MORTAL, HELL };
 
-enum Buff {
-    SPEED, UNBREAK, INVISIBLE, NONE
-};
+enum Buff { SPEED, UNBREAK, INVISIBLE, NONE };
 
-#endif // end of PkGc_cocos2d_saveHostage_ENUMUTIL_H_
+#endif  // end of PkGc_cocos2d_saveHostage_ENUMUTIL_H_

@@ -19,7 +19,7 @@ class GameLayer;
 using namespace std;
 USING_NS_CC;
 
-class Enemy: public cocos2d::Sprite {
+class Enemy : public cocos2d::Sprite {
 public:
     Enemy();
     ~Enemy();
@@ -100,4 +100,4 @@ private:
     GameLayer* parentLayer;
 };
 
-#endif // end of PkGc_cocos2d_saveHostage_ENEMY_H_
+#endif  // end of PkGc_cocos2d_saveHostage_ENEMY_H_

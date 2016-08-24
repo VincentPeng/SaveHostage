@@ -8,17 +8,9 @@
 
 #include "GameLogoScene.h"
 
+GameLogoScene::GameLogoScene() {}
 
-
-GameLogoScene::GameLogoScene()
-{
-    
-}
-
-GameLogoScene::~GameLogoScene()
-{
-    
-}
+GameLogoScene::~GameLogoScene() {}
 
 bool GameLogoScene::init() {
     bool ret = false;
@@ -30,13 +22,12 @@ bool GameLogoScene::init() {
         this->schedule(schedule_selector(GameLogoScene::loadGameScene), 2.0f);
         addChild(bg);
         ret = true;
-    } while(0);
+    } while (0);
     return ret;
 }
 
 void GameLogoScene::loadGameScene(float dt) {
     auto s = PreGameScene::create();
-    auto scene = TransitionFade::create(1.5,s,Color3B::WHITE);
+    auto scene = TransitionFade::create(1.5, s, Color3B::WHITE);
     Director::getInstance()->replaceScene(scene);
-    
 }
