@@ -10,6 +10,8 @@ class Hostage;
 #include <vector>
 #include <queue>
 #include <deque>
+#include "Hostage.h"
+#include "ImageHelper.h"
 
 using namespace std;
 USING_NS_CC;
@@ -47,14 +49,14 @@ public:
     void attackedBy(int power);
     bool isDead();
     void reset();
-
+    
     Buff getCurBuff();
     void setCurBuff(Buff buff);
     void buffCountdown();
     int getBufftime();
     void setBufftime(int bufftime);
-
-
+    
+    
 private:
     int speed;
     int health;

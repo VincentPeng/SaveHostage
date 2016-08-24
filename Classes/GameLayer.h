@@ -7,10 +7,18 @@
 #include "Hostage.h"
 #include "JoyStick.h"
 #include "EnumUtil.h"
+#include <math.h>
+#include <PathGenerator.h>
+#include "GameEndLayer.h"
+#include "ImageHelper.h"
+#include <cmath>
+#include "TileNode.h"
+#include "AppDef.h"
+#include "SimpleAudioEngine.h"
 
 USING_NS_CC;
 
-class GameLayer: public cocos2d::Layer, public JoyStickDelegate //public OptionDelegate
+class GameLayer: public cocos2d::Layer, public JoyStickDelegate
 {
 public:
     GameLayer();
@@ -27,13 +35,13 @@ public:
     Point tileCoordinate2Pixel(Point point);
     Point convertCoordinate2Pixel (int x, int y, int mapHeight);
     void saveBtnPressed(CCObject* pSender);
-	  void toggleBtnPressed(Object* pSender);
+    void toggleBtnPressed(Object* pSender);
     virtual void onJoyStickUpdate(Node*sender, float angle, Point direction,
-            float power);
-
+                                  float power);
+    
     void onWalk(int direction);
     void onStop();
-
+    
     void checkNewEvent();
     void checkJoysticker();
     void checkSaveButton();
@@ -42,10 +50,10 @@ public:
     void changeSpeed();
     void changeSign();
     int distance(Point, Point);
-
+    
     vector<Point>* getStraightPath(Point from, Point to);
     void printPath(vector<Point>* path);
-
+    
     vector<vector<Point>> generateLoop();
     void checkGameEnded();
     static GameLevel game_level;
@@ -59,10 +67,10 @@ public:
     void resumeGmame();
     void restartGame();
     void pauseGame();
-
+    
     void pausedGame(Object* pSender);
     void soundSwitch(Object* pSender);
-
+    
 private:
     Hero* _hero;
     Enemy* _enemy;
@@ -73,7 +81,7 @@ private:
     Hostage* _hostage3;
     Hostage* _hostage4;
     vector<Sprite*> potions;
-
+    
     vector<Hostage*> hostages;
     vector<Point> hostagesWatch;
     int tempstate = 0;
@@ -81,13 +89,13 @@ private:
     TMXTiledMap* _map;
     TMXLayer* _bgLayer;
     TMXLayer* _metaLayer;
-
+    
     ProgressTimer* heroHealthBarTimer;
     JoyStick* gameSticker;
     MenuItemImage* saveBtn;
     bool joyStickerEnabled;
     bool GameSuspended;
-
+    
     MenuItemImage* pauseBtn;
 };
 

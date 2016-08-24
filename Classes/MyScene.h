@@ -4,6 +4,7 @@
 #include "cocos2d.h"
 #include "GameLayer.h"
 #include "SimpleAudioEngine.h"
+#include "EnumUtil.h"
 
 class MyScene : public cocos2d::Scene
 {
@@ -14,7 +15,7 @@ public:
     void loadingResource();
     void loadingMusic();
     CREATE_FUNC(MyScene);
-
+    
     CC_SYNTHESIZE(GameLayer*, _gameLayer, GameLayer);
     static int musicLoaded;
 };

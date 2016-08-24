@@ -1,6 +1,12 @@
+//
+//
+//  SaveHostage
+//
+//  Created by Ke Peng on 4/9/14.
+//
+//
+
 #include "Hero.h"
-#include "Hostage.h"
-#include "ImageHelper.h"
 
 Hero::Hero() {
 }
@@ -11,25 +17,17 @@ Hero::~Hero() {
 bool Hero::init() {
     bool ret = false;
     do {
-        CCLOG("Hero::init 1");
+        
         CC_BREAK_IF(!Sprite::initWithFile("heroset.png"));
-        CCLOG("Hero::init 2");
+        
         saving_clock = 0;
         health = 100;
         current_hostage = NULL;
         speedChange = false;
-//        normalSpeed();
         speed = HEROSPEED_M;
         setDirection(DOWN);
         nextDirection = direction;
-/*        Sprite* timerSprite = Sprite::create("greenbar.png");
-        healthProgressTimer = ProgressTimer::create(timerSprite);
-        healthProgressTimer->setType(ProgressTimer::Type::RADIAL);
-        healthProgressTimer->setReverseProgress(true);
-        healthProgressTimer->setPercentage(100);
-        healthProgressTimer->setPosition(15.0f, 30.0f);
-        addChild(healthProgressTimer);*/
-
+        
         ret = true;
     } while (0);
     return ret;
@@ -43,8 +41,6 @@ void Hero::reset() {
     speedChange = false;
     direction = DOWN;
     nextDirection = direction;
-/*    healthProgressTimer -> setPercentage(100);
-    healthProgressTimer -> setVisible(true);*/
     savedHostages.clear();
     pastPoints.clear();
     pastDirections.clear();
@@ -54,9 +50,6 @@ void Hero::reset() {
 }
 
 void Hero::setHealth(int health) {
-/*    if (health > 0)
-        healthProgressTimer->setVisible(true);
-    healthProgressTimer->setPercentage(health);*/
     this->health = health;
 }
 
@@ -103,11 +96,11 @@ void Hero::setTargetSavingClocks(int target) {
 
 void Hero::attackedBy(int power) {
     health -= power;
-/*    healthProgressTimer->setPercentage(health);
-    if (health < 0) {
-        setTexture("mariodown.jpg");
-        healthProgressTimer->setVisible(false);
-    }*/
+    /*    healthProgressTimer->setPercentage(health);
+     if (health < 0) {
+     setTexture("mariodown.jpg");
+     healthProgressTimer->setVisible(false);
+     }*/
 }
 
 bool Hero::isDead() {
@@ -119,7 +112,6 @@ bool Hero::isDead() {
 
 void Hero::incrementSavingClock() {
     saving_clock++;
-    CCLOG("saving clock is %d", saving_clock);
     if (saving_clock == target_saving_clocks) {
         pastPosition = current_hostage->getPosition();
         current_hostage->setMyHero(this);
@@ -165,7 +157,7 @@ void Hero::updateHostagesPosition() {
 }
 
 void Hero::doAction() {
-//    CCLOG("Hero::doAction");
+    //    CCLOG("Hero::doAction");
     if (clock % this->speed == 0) {
         if (currentNode == nextNode) {
             return;
@@ -188,7 +180,7 @@ void Hero::doAction() {
         cocos2d::Point currentPos = this->getPosition();
         for (int i = 1; i <= this->speed; i++) {
             Point pathPoint = ((nextPosition - currentPos) / this->speed) * i
-                    + currentPos;
+            + currentPos;
             subpath.push_back(pathPoint);
         }
         /*        MoveTo* moveto = MoveTo::create(0.2f, nextPosition);
@@ -210,33 +202,33 @@ void Hero::setCurBuff(Buff buff) {
     this->removeChildByTag(100);
     Sprite *b;
     switch (buff) {
-    case Buff::SPEED:
-        b = Sprite::create("buff_speed.png");
-//        this->highSpeed();
-        speedChange = true;
-        this->bufftime = BUFFTIME;
-        this->addChild(b, 1, 100);
-        b->setPosition(Point(1 * BLKWIDTH, 2.5 * BLKWIDTH));
-        speedChange = true;
-        break;
-    case Buff::INVISIBLE:
-        b = Sprite::create("buff_invisible.png");
-        this->bufftime = BUFFTIME;
-        this->addChild(b, 1, 100);
-        b->setPosition(Point(1 * BLKWIDTH, 2.5 * BLKWIDTH));
-        break;
-    case Buff::UNBREAK:
-        b = Sprite::create("buff_unbreak.png");
-        this->bufftime = BUFFTIME;
-        this->addChild(b, 1, 100);
-        b->setPosition(Point(1 * BLKWIDTH, 2.5 * BLKWIDTH));
-        break;
-    case Buff::NONE:
-        this->normalSpeed();
-        this->bufftime = 0;
-        break;
-    default:
-        break;
+        case Buff::SPEED:
+            b = Sprite::create("buff_speed.png");
+            //        this->highSpeed();
+            speedChange = true;
+            this->bufftime = BUFFTIME;
+            this->addChild(b, 1, 100);
+            b->setPosition(Point(1 * BLKWIDTH, 2.5 * BLKWIDTH));
+            speedChange = true;
+            break;
+        case Buff::INVISIBLE:
+            b = Sprite::create("buff_invisible.png");
+            this->bufftime = BUFFTIME;
+            this->addChild(b, 1, 100);
+            b->setPosition(Point(1 * BLKWIDTH, 2.5 * BLKWIDTH));
+            break;
+        case Buff::UNBREAK:
+            b = Sprite::create("buff_unbreak.png");
+            this->bufftime = BUFFTIME;
+            this->addChild(b, 1, 100);
+            b->setPosition(Point(1 * BLKWIDTH, 2.5 * BLKWIDTH));
+            break;
+        case Buff::NONE:
+            this->normalSpeed();
+            this->bufftime = 0;
+            break;
+        default:
+            break;
     }
 }
 
@@ -244,7 +236,7 @@ void Hero::normalSpeed() {
     if (this->speed != HEROSPEED_M) {
         speedChange = true;
     }
-//    setSpeed(HEROSPEED_M);
+    //    setSpeed(HEROSPEED_M);
 }
 
 void Hero::highSpeed() {

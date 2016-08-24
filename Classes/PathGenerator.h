@@ -40,7 +40,7 @@ typedef struct
 class PathGenerator
 {
 private:
-//    static PathGenerator *_thePathGenerator;
+    //    static PathGenerator *_thePathGenerator;
     TMXTiledMap* _map;
     int _map_width;
     int _map_height;

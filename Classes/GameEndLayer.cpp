@@ -1,12 +1,19 @@
-#include "GameLayer.h"
+//
+//
+//  SaveHostage
+//
+//  Created by Ke Peng on 4/9/14.
+//
+//
+
 #include "GameEndLayer.h"
 
 GameEndLayer::GameEndLayer() {
-
+    
 }
 
 GameEndLayer::~GameEndLayer() {
-
+    
 }
 
 void GameEndLayer::setParentGameLayer(GameLayer *parent) {
@@ -17,7 +24,6 @@ void GameEndLayer::resumeButtonPressed(cocos2d::Object *pSender) {
     LOGV("resumeButtonPressed");
     Director::getInstance()->resume();
     removeFromParentAndCleanup(true);
-//    Director::getInstance()->popScene();
 }
 
 void GameEndLayer::restartButtonPressed(cocos2d::Object *pSender) {
@@ -28,26 +34,23 @@ void GameEndLayer::restartButtonPressed(cocos2d::Object *pSender) {
 }
 
 void GameEndLayer::settingButtonPressed(cocos2d::Object *pSender) {
-    LOGV("settingButtonPressed");
-//    parentLayer -> removeChild(this);
+    // LOGV("settingButtonPressed");
 }
 
 void GameEndLayer::initMenu() {
     LOGV("GameEndLayer initMenu");
-
+    
     MenuItemImage* resumeItem = MenuItemImage::create(PIC_RESUME, PIC_RESUME_PRESSED,
-                CC_CALLBACK_1(GameEndLayer::resumeButtonPressed, this));
+                                                      CC_CALLBACK_1(GameEndLayer::resumeButtonPressed, this));
     MenuItemImage* restartItem = MenuItemImage::create(PIC_RESTART, PIC_RESTART,
-            CC_CALLBACK_1(GameEndLayer::restartButtonPressed, this));
+                                                       CC_CALLBACK_1(GameEndLayer::restartButtonPressed, this));
     MenuItemImage* settingItem = MenuItemImage::create(PIC_SETTINGS,
-            PIC_SETTINGS,
-            CC_CALLBACK_1(GameEndLayer::restartButtonPressed, this));
-
+                                                       PIC_SETTINGS,
+                                                       CC_CALLBACK_1(GameEndLayer::restartButtonPressed, this));
+    
     Menu* menu = Menu::create(resumeItem, restartItem, settingItem, NULL);
-//    menu->alignItemsHorizontallyWithPadding(80.0f);
-//    menu->setPosition(Point(480.0f, 200.0f));
     menu->alignItemsVerticallyWithPadding(5.0f);
-
+    
     this->addChild(menu, 5);
 }
 
@@ -86,13 +89,12 @@ Scene* GameEndLayer::getScene(RenderTexture* rt) {
     Size winsize = Director::getInstance()->getWinSize();
     sprite->setPosition(winsize.width/2, winsize.height/2);
     sprite->setFlipY(true);
-
+    
     Scene* retScene = Scene::create();
-    //retScene->addChild(sprite,1);
-
+    
     GameEndLayer* endLayer = GameEndLayer::create();
     retScene->addChild(endLayer,2);
-
+    
     return retScene;
-
+    
 }

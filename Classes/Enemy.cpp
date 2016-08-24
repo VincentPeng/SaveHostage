@@ -1,12 +1,12 @@
+//
+//
+//  SaveHostage
+//
+//  Created by Ke Peng on 4/9/14.
+//
+//
+
 #include "enemy.h"
-#include <PathGenerator.h>
-#include "AppDef.h"
-#include "TileNode.h"
-#include "EnumUtil.h"
-#include "GameLayer.h"
-#include "SimpleAudioEngine.h"
-#include "ImageHelper.h"
-#define BLOCK 30
 
 Enemy::Enemy() {
 }
@@ -19,22 +19,21 @@ int Enemy::lookaround_clock = 3;
 bool Enemy::init() {
     bool ret = false;
     do {
-        CC_BREAK_IF(!Sprite::initWithFile("enemyset.png"));
+        CC_BREAK_IF(!Sprite::initWithFile(PIC_ENEMY_SET));
         ret = true;
     } while (0);
     return ret;
 }
 
+// Reset the enemy
 void Enemy::reset() {
     this->setGameLevel();
     curState = State::IDLE;
     clock = 0;
-    sign = Sprite::create("state_idle.png");
-    this->setSign(sign);
-    setTexture("enemyset.png");
+    this->setSign(Sprite::create(PIC_ENEMY_IDLE));
+    setTexture(PIC_ENEMY_SET);
     curDirection = Direction::DOWN;
-    setTextureRect(
-            ImageHelper::sharedImageHelper()->getWalkAnimationsRects()[curDirection][1]);
+    setTextureRect(ImageHelper::sharedImageHelper()->getWalkAnimationsRects()[curDirection][1]);
 }
 
 int Enemy::getAtkRange() {
@@ -106,7 +105,7 @@ Direction Enemy::directionP2P(cocos2d::Point pold, cocos2d::Point pnew) {
         return UR;
     else if (dx > 0 && dy < 0)
         return DR;
-
+    
     return STOP;
 }
 
@@ -122,22 +121,22 @@ void Enemy::walk() {
         }
     } else if (epath.empty() || curIndex >= epath.size())
         return;
-
+    
     /*set direction*/
-
+    
     if (curIndex + 1 < epath.size()) {
         curDirection = directionP2P(epath[curIndex], epath[curIndex + 1]);
         if (curDirection != STOP) {
             setTextureRect(
-                    ImageHelper::sharedImageHelper()->getWalkAnimationsRects()[curDirection][curIndex
-                            % 4]);
+                           ImageHelper::sharedImageHelper()->getWalkAnimationsRects()[curDirection][curIndex
+                                                                                                    % 4]);
         }
     }
-
+    
     FiniteTimeAction* actionMove = MoveTo::create((float) 1 / FPS * getSpeed(),
-            epath[curIndex++]);
+                                                  epath[curIndex++]);
     runAction(Sequence::create(actionMove, NULL));
-
+    
 }
 
 State Enemy::getState() {
@@ -158,11 +157,11 @@ void Enemy::takeAction() {
 }
 
 void Enemy::hangAround() {
-
+    
 }
 
 void Enemy::alerting() {
-
+    
 }
 
 void Enemy::shoot() {
@@ -171,7 +170,7 @@ void Enemy::shoot() {
 }
 
 void Enemy::toMissingPoint() {
-
+    
 }
 
 void Enemy::setSign(Sprite* sign) {
@@ -181,7 +180,7 @@ void Enemy::setSign(Sprite* sign) {
 }
 
 bool Enemy::ifStoped() {
-
+    
     return curIndex >= epath.size();
 }
 
@@ -200,8 +199,8 @@ void Enemy::idleMoveFrom(int index) {
 
 bool Enemy::canSee(Hero* ob) {
     if (!ob->ifInvisible()
-            && distance(this->getPosition(), ob->getPosition()) <= visionRange
-            && ifVisibleAngle(ob->getPosition())) {
+        && distance(this->getPosition(), ob->getPosition()) <= visionRange
+        && ifVisibleAngle(ob->getPosition())) {
         return true;
     }
     return false;
@@ -209,7 +208,7 @@ bool Enemy::canSee(Hero* ob) {
 
 bool Enemy::canAttack(Hero* ob) {
     if (!ob->ifUnbreak() && !ob->ifInvisible()
-            && distance(this->getPosition(), ob->getPosition()) <= atkRange) {
+        && distance(this->getPosition(), ob->getPosition()) <= atkRange) {
         return true;
     }
     return false;
@@ -234,7 +233,7 @@ void Enemy::useHighSpeed() {
 int Enemy::distance(Point a, Point b) {
     int x = (int) (a.x - b.x);
     int y = (int) (a.y - b.y);
-
+    
     return (int) sqrt(x * x + y * y);
 }
 
@@ -256,30 +255,30 @@ void Enemy::setInspectTarget(Point inspectTarget) {
 
 void Enemy::setGameLevel() {
     switch (GameLayer::game_level) {
-    case GameLevel::HEAVEN:
-        this->setNormalSpeed(ENEMYSPEED_L);
-        this->useNormalSpeed();
-        this->setDamage(DAMAGE_L);
-        this->setAtkRange(ATKRANGE_L);
-        break;
-    case GameLevel::MORTAL:
-        this->setNormalSpeed(ENEMYSPEED_M);
-        this->useNormalSpeed();
-        this->setDamage(DAMAGE_M);
-        this->setAtkRange(ATKRANGE_M);
-        break;
-    case GameLevel::HELL:
-        this->setNormalSpeed(ENEMYSPEED_H);
-        this->useNormalSpeed();
-        this->setDamage(DAMAGE_H);
-        this->setAtkRange(ATKRANGE_H);
-        break;
-    default:
-        this->setNormalSpeed(ENEMYSPEED_M);
-        this->useNormalSpeed();
-        this->setDamage(DAMAGE_M);
-        this->setAtkRange(ATKRANGE_M);
-        break;
+        case GameLevel::HEAVEN:
+            this->setNormalSpeed(ENEMYSPEED_L);
+            this->useNormalSpeed();
+            this->setDamage(DAMAGE_L);
+            this->setAtkRange(ATKRANGE_L);
+            break;
+        case GameLevel::MORTAL:
+            this->setNormalSpeed(ENEMYSPEED_M);
+            this->useNormalSpeed();
+            this->setDamage(DAMAGE_M);
+            this->setAtkRange(ATKRANGE_M);
+            break;
+        case GameLevel::HELL:
+            this->setNormalSpeed(ENEMYSPEED_H);
+            this->useNormalSpeed();
+            this->setDamage(DAMAGE_H);
+            this->setAtkRange(ATKRANGE_H);
+            break;
+        default:
+            this->setNormalSpeed(ENEMYSPEED_M);
+            this->useNormalSpeed();
+            this->setDamage(DAMAGE_M);
+            this->setAtkRange(ATKRANGE_M);
+            break;
     }
     this->setVisionRange(VISIONRANGE);
 }
@@ -287,33 +286,33 @@ void Enemy::setGameLevel() {
 bool Enemy::ifVisibleAngle(Point target) {
     Point myVector;
     switch (curDirection) {
-    case UP:
-        myVector = Point(0, -1);
-        break;
-    case DOWN:
-        myVector = Point(0, 1);
-        break;
-    case LEFT:
-        myVector = Point(-1, 0);
-        break;
-    case RIGHT:
-        myVector = Point(1, 0);
-        break;
-    case UL:
-        myVector = Point(-1, -1);
-        break;
-    case UR:
-        myVector = Point(1, -1);
-        break;
-    case DL:
-        myVector = Point(-1, 1);
-        break;
-    case DR:
-        myVector = Point(1, 1);
-        break;
-    default:
-        myVector = Point(0, 1);
-        break;
+        case UP:
+            myVector = Point(0, -1);
+            break;
+        case DOWN:
+            myVector = Point(0, 1);
+            break;
+        case LEFT:
+            myVector = Point(-1, 0);
+            break;
+        case RIGHT:
+            myVector = Point(1, 0);
+            break;
+        case UL:
+            myVector = Point(-1, -1);
+            break;
+        case UR:
+            myVector = Point(1, -1);
+            break;
+        case DL:
+            myVector = Point(-1, 1);
+            break;
+        case DR:
+            myVector = Point(1, 1);
+            break;
+        default:
+            myVector = Point(0, 1);
+            break;
     }
     float x1 = myVector.x;
     float y1 = myVector.y;

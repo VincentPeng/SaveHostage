@@ -2,6 +2,7 @@
 #define PkGc_cocos2dx_saveHostage_BGLAYER_H_
 
 #include "cocos2d.h"
+#include "editor-support/cocostudio/CocoStudio.h"
 #include "extensions/cocos-ext.h"
 
 class BgLayer: public cocos2d::Layer {

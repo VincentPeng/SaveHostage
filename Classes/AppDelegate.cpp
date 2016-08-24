@@ -1,9 +1,4 @@
 #include "AppDelegate.h"
-#include "MyScene.h"
-#include "GameLogoScene.h"
-#include "AppDef.h"
-#include "EnumUtil.h"
-#include "SimpleAudioEngine.h"
 
 USING_NS_CC;
 
@@ -16,10 +11,10 @@ static cocos2d::Size largeResolutionSize = cocos2d::Size(2048, 1536);
 
 
 AppDelegate::AppDelegate() {
-
+    
 }
 
-AppDelegate::~AppDelegate() 
+AppDelegate::~AppDelegate()
 {
 }
 
@@ -47,11 +42,11 @@ bool AppDelegate::applicationDidFinishLaunching() {
     
     if(!glview) {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WIN32) || \
-    (CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || \
-    (CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
+(CC_TARGET_PLATFORM == CC_PLATFORM_MAC) || \
+(CC_TARGET_PLATFORM == CC_PLATFORM_LINUX)
         
-    glview = GLViewImpl::createWithRect("SaveHostage",
-                                        cocos2d::Rect(0, 0, designResolutionSize.width, designResolutionSize.height));
+        glview = GLViewImpl::createWithRect("SaveHostage",
+                                            cocos2d::Rect(0, 0, designResolutionSize.width, designResolutionSize.height));
 #else
         glview = GLViewImpl::create("SaveHostage");
 #endif
@@ -77,17 +72,17 @@ bool AppDelegate::applicationDidFinishLaunching() {
     }
     
     register_all_packages();
-
+    
     auto scene = GameLogoScene::create();
     director->runWithScene(scene);
-
+    
     return true;
 }
 
 // This function will be called when the app is inactive. When comes a phone call,it's be invoked too
 void AppDelegate::applicationDidEnterBackground() {
     Director::getInstance()->stopAnimation();
-
+    
     // if you use SimpleAudioEngine, it must be pause
     CocosDenshion::SimpleAudioEngine::sharedEngine()->pauseBackgroundMusic();
 }
@@ -95,7 +90,7 @@ void AppDelegate::applicationDidEnterBackground() {
 // this function will be called when the app is active again
 void AppDelegate::applicationWillEnterForeground() {
     Director::getInstance()->startAnimation();
-
+    
     // if you use SimpleAudioEngine, it must resume here
     CocosDenshion::SimpleAudioEngine::sharedEngine()->resumeBackgroundMusic();
 }

@@ -8,9 +8,6 @@
 
 #include "PathGenerator.h"
 
-
-//PathGenerator* PathGenerator::_thePathGenerator = NULL;
-
 PathGenerator::PathGenerator(TMXTiledMap* map)
 {
     _map = map;
@@ -63,11 +60,11 @@ bool PathGenerator::canPass(int x, int y) {
     int gid =_map->getLayer("meta")->getTileGIDAt(Point(x,y));
     unordered_map<string,Value> kmap = _map->getPropertiesForGID(gid).asValueMap();
     if(kmap.empty()) {
-//        CCLOG("err: kmap is null!!");
+        //        CCLOG("err: kmap is null!!");
     }
     else {
         Value str = kmap.at("Collidable");
-//        CCLOG("%s",str.asString().c_str());
+        //        CCLOG("%s",str.asString().c_str());
         if(str.asString().compare("true") == 0)
         {
             ret = false;
@@ -173,7 +170,6 @@ std::vector<Point>* PathGenerator::generatePath(Point start, Point end)
     this->resetTileNodes();
     _start = start; _end = end;
     vector<Point>* path = new vector<Point>();
-//    path->push_back(start);
     TileNode* startNode = _nodes[int(start.x)][int(start.y)];
     startNode->setParent(NULL);
     _opened_nodes.push_back(startNode);
@@ -189,7 +185,6 @@ std::vector<Point>* PathGenerator::generatePath(Point start, Point end)
     }
     while (pathNode) {
         path->push_back(convertCoordinate2Pixel(pathNode->getX(), pathNode->getY(),_map_height));
-//        path->push_back(Point(pathNode->getX(),pathNode->getY()));
         pathNode = pathNode->getParent();
     }
     std::reverse(path->begin(), path->end());

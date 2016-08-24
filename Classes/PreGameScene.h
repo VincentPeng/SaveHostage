@@ -29,7 +29,7 @@ public:
     void loadGameScene(float dt);
     
     void startPressed(Object* pSender);
-    void aboutusPressed(Object* pSender);
+    void aboutPressed(Object* pSender);
 };
 
 #endif /* defined(__SaveHostage__PreGameScene__) */

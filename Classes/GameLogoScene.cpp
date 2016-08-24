@@ -12,7 +12,7 @@
 
 GameLogoScene::GameLogoScene()
 {
-    CCLOG("allocing game logo scene");
+    
 }
 
 GameLogoScene::~GameLogoScene()
@@ -22,10 +22,10 @@ GameLogoScene::~GameLogoScene()
 
 bool GameLogoScene::init() {
     bool ret = false;
-    CCLOG("GameLogoScene::init");
+    // CCLOG("GameLogoScene::init");
     do {
         Sprite* bg = Sprite::create("gamelogobg.png");
-//        bg->setPosition(480.0f, 270.0f);
+        //        bg->setPosition(480.0f, 270.0f);
         bg->setPosition(WIDTH_CENTER, HEIGHT_CENTER);
         this->schedule(schedule_selector(GameLogoScene::loadGameScene), 2.0f);
         addChild(bg);
@@ -34,8 +34,7 @@ bool GameLogoScene::init() {
     return ret;
 }
 
-void GameLogoScene::loadGameScene(float dt)
-{
+void GameLogoScene::loadGameScene(float dt) {
     auto s = PreGameScene::create();
     auto scene = TransitionFade::create(1.5,s,Color3B::WHITE);
     Director::getInstance()->replaceScene(scene);

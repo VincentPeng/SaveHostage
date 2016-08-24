@@ -1,6 +1,12 @@
+//
+//
+//  SaveHostage
+//
+//  Created by Ke Peng on 4/9/14.
+//
+//
+
 #include "Hostage.h"
-#include "ImageHelper.h"
-#include "AppDef.h"
 
 Hostage::Hostage() {}
 
@@ -63,7 +69,7 @@ int Hostage::getTotalClocksNeeded()
 
 void Hostage::showProgressTimer()
 {
-//    saveProgressTimer->setPercentage(100.0f);
+    //    saveProgressTimer->setPercentage(100.0f);
     saveProgressTimer->setVisible(true);
 }
 
@@ -83,7 +89,7 @@ void Hostage::setClockPassed(int clocknum)
 }
 
 void Hostage::doAction() {
-//    CCLOG("Hostage::doAction");
+    //    CCLOG("Hostage::doAction");
     if (myHero) {
         followHero();
     }
@@ -111,9 +117,9 @@ Direction Hostage::directionP2P(cocos2d::Point pold, cocos2d::Point pnew)
 
 void Hostage::followHero()
 {
-//    CCLOG("following the hero");
+    //    CCLOG("following the hero");
     if (clock % HOSTAGESPEED == 0) {
-//        nextPosition = myHero->getPastPosition();
+        //        nextPosition = myHero->getPastPosition();
         if(nextPosition == this->getPosition())
             return;
         clock = 0;
@@ -124,9 +130,9 @@ void Hostage::followHero()
             Point pathPoint = ((nextPosition - currentPos) / HOSTAGESPEED) * i + currentPos;
             subpath.push_back(pathPoint);
         }
-/*        MoveTo* moveto = MoveTo::create(0.2f, nextPosition);
-        this->runAction(moveto);
-        this->setPosition(nextPosition);*/
+        /*        MoveTo* moveto = MoveTo::create(0.2f, nextPosition);
+         this->runAction(moveto);
+         this->setPosition(nextPosition);*/
     }
     Point nextPoint = subpath[clock];
     setPosition (nextPoint);

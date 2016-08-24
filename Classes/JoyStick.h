@@ -79,7 +79,7 @@ public:
     void resetTexturePosition();
     bool containsTouchLocation(Touch *touch) ;
     void updateTouchPoint(Point touchPoint);
-	virtual bool onTouchBegan(Touch *touch, cocos2d::Event *unused_event);
+    virtual bool onTouchBegan(Touch *touch, cocos2d::Event *unused_event);
     virtual void onTouchMoved(Touch *touch, cocos2d::Event *unused_event);
     virtual void onTouchEnded(Touch *touch, cocos2d::Event *unused_event);
     virtual void onEnter();

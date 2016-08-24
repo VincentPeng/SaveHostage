@@ -6,6 +6,8 @@ class GameLayer;
 #include "cocos2d.h"
 #include "Hero.h"
 #include "GameLayer.h"
+#include "ImageHelper.h"
+#include "AppDef.h"
 
 class Hostage : public cocos2d::Sprite {
 public:

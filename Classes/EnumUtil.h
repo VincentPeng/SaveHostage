@@ -49,6 +49,11 @@
 #define PIC_PAUSE_PRESSED "buttonPause_pressed.png"
 #define PIC_SOUND_ON "buttonSound.png"
 #define PIC_SOUND_OFF "buttonSoundOff.png"
+#define PIC_PLAY "buttonPlay.png"
+#define PIC_ABOUT "buttonAbout.png"
+
+#define PIC_ENEMY_SET "enemyset.png"
+#define PIC_ENEMY_IDLE "state_idle.png"
 
 #define BUFFTIME 800    // 60 -> 1s
 enum State {

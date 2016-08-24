@@ -1,3 +1,11 @@
+//
+//
+//  SaveHostage
+//
+//  Created by Ke Peng on 4/9/14.
+//
+//
+
 #include "JoyStick.h"
 
 JoyStick * JoyStick::createJoyStick(const string&dockName,const string&ballName,int ballradius,int movearearadius,bool isfollowtouch,bool iscanvisible,bool isautohide,bool hasanimation)
@@ -15,7 +23,7 @@ JoyStick * JoyStick::createJoyStick(const string&dockName,const string&ballName,
     CC_SAFE_DELETE(joystick);
     return NULL;
 }
-//JokStick鐨勫垵濮嬪寲
+
 void JoyStick::initWithBallRadius(int ballradius,int movearearadius,bool isfollowtouch,bool iscanvisible,bool isautohide,bool hasanimation)
 {
     
@@ -56,30 +64,30 @@ void JoyStick::initWithBallRadius(int ballradius,int movearearadius,bool isfollo
 void JoyStick::setBallTexture(const string&imageName)
 {
     Ball->removeAllChildrenWithCleanup(true);
-	
-	Sprite *balltexture=Sprite::create(imageName);
-	
-	Ball->addChild(balltexture,4,1);
+    
+    Sprite *balltexture=Sprite::create(imageName);
+    
+    Ball->addChild(balltexture,4,1);
     
 }
 void JoyStick::setDockTexture(const string&imageName)
 {
     
     Dock->removeAllChildrenWithCleanup(true);
-	Sprite *docktexture=Sprite::create(imageName);
-	
-	Dock->addChild(docktexture,3,2);
+    Sprite *docktexture=Sprite::create(imageName);
+    
+    Dock->addChild(docktexture,3,2);
     
 }
 void JoyStick::setHitAreaWithRadius(int radius)
 {
-	ActiveRect=Rect(0, 0, 0, 0);
-	ActiveRadius=radius;
+    ActiveRect=Rect(0, 0, 0, 0);
+    ActiveRadius=radius;
 }
 void JoyStick::setHitAreaWithRect(Rect rect)
 {
     ActiveRect=rect;
-	ActiveRadius=0;
+    ActiveRadius=0;
 }
 void JoyStick::startTimer(float dt)
 {
@@ -97,71 +105,71 @@ void JoyStick::timerUpdate(float dt)
 void JoyStick::myTouchBegan(Point touchPoint)
 {
     CurrentPoint = touchPoint;
-	IsTouched=true;
-	
-	if(IsAutoHide && IsCanVisible){
-		this->setVisible(true);
-	}
-	
-	if(IsFollowTouch)
+    IsTouched=true;
+    
+    if(IsAutoHide && IsCanVisible){
+        this->setVisible(true);
+    }
+    
+    if(IsFollowTouch)
     {
-		this->setPosition(touchPoint);
-	}
-	
-	Ball->stopAllActions();
-	this->updateTouchPoint(touchPoint);
+        this->setPosition(touchPoint);
+    }
+    
+    Ball->stopAllActions();
+    this->updateTouchPoint(touchPoint);
     this->startTimer(0);
 }
 void JoyStick::resetTexturePosition()
 {
     Power=0;
-	Angle=0;
-	CurrentPoint=Point(0,0);
+    Angle=0;
+    CurrentPoint=Point(0,0);
     
-	if (!IsAutoHide && IsCanVisible && HasAnimation)
+    if (!IsAutoHide && IsCanVisible && HasAnimation)
     {
-		MoveTo *action =MoveTo::create(0.5, Point(0,0));
-		Ball->runAction(EaseElasticOut::create(action));
-	}
+        MoveTo *action =MoveTo::create(0.5, Point(0,0));
+        Ball->runAction(EaseElasticOut::create(action));
+    }
     else
     {
-		Ball->setPosition(Point(0,0));
-	}
+        Ball->setPosition(Point(0,0));
+    }
 }
 bool JoyStick::containsTouchLocation(Touch *touch)
 {
     Point touchPoint = touch->getLocation();
-	if (ActiveRadius>0)
-	{
-		if (touchPoint.getDistance(this->getParent()->convertToWorldSpace(this->getPosition()))< ActiveRadius) {
-			return true;
-		}
-	}
-	if(ActiveRect.size.width>0 && ActiveRect.size.height>0){
-		if (touchPoint.x>ActiveRect.origin.x && touchPoint.x<ActiveRect.origin.x+ActiveRect.size.width && touchPoint.y>ActiveRect.origin.y && touchPoint.y<ActiveRect.origin.y+ActiveRect.size.height) {
-			return true;
-		}
-	}
+    if (ActiveRadius>0)
+    {
+        if (touchPoint.getDistance(this->getParent()->convertToWorldSpace(this->getPosition()))< ActiveRadius) {
+            return true;
+        }
+    }
+    if(ActiveRect.size.width>0 && ActiveRect.size.height>0){
+        if (touchPoint.x>ActiveRect.origin.x && touchPoint.x<ActiveRect.origin.x+ActiveRect.size.width && touchPoint.y>ActiveRect.origin.y && touchPoint.y<ActiveRect.origin.y+ActiveRect.size.height) {
+            return true;
+        }
+    }
     return false;
 }
 void JoyStick::updateTouchPoint(Point touchPoint)
 {
     Point selfposition=this->getParent()->convertToWorldSpace(this->getPosition());
-	if (touchPoint.getDistance(Point(selfposition.x,selfposition.y)) > (MoveAreaRadius-BallRadius))
-	{
+    if (touchPoint.getDistance(Point(selfposition.x,selfposition.y)) > (MoveAreaRadius-BallRadius))
+    {
         Vec2 newv = Vec2(touchPoint.x-selfposition.x, touchPoint.y-selfposition.y).getNormalized();
         CurrentPoint =Point::ZERO+newv*(float)(MoveAreaRadius-BallRadius);
-	}
+    }
     else
     {
-		CurrentPoint = Point(touchPoint.x-selfposition.x,touchPoint.y-selfposition.y);
-	}
-	Ball->setPosition(CurrentPoint);
-	
-	Angle=atan2(Ball->getPositionY(), Ball->getPositionX())/(3.14159/180);
-	Power=Ball->getPosition().getDistance(Point::ZERO)/(MoveAreaRadius-BallRadius);
-	Direction=Point(cos(Angle * (3.14159/180)),sin(Angle * (3.14159/180)));
-	
+        CurrentPoint = Point(touchPoint.x-selfposition.x,touchPoint.y-selfposition.y);
+    }
+    Ball->setPosition(CurrentPoint);
+    
+    Angle=atan2(Ball->getPositionY(), Ball->getPositionX())/(3.14159/180);
+    Power=Ball->getPosition().getDistance(Point::ZERO)/(MoveAreaRadius-BallRadius);
+    Direction=Point(cos(Angle * (3.14159/180)),sin(Angle * (3.14159/180)));
+    
 }
 bool JoyStick::onTouchBegan(Touch * touch,Event * event)
 {
@@ -190,14 +198,14 @@ void JoyStick::onTouchEnded(Touch * touch,Event * event)
 {
     if (IsTouched)
     {
-		if(IsAutoHide && IsCanVisible)
+        if(IsAutoHide && IsCanVisible)
         {
-			this->setVisible(false);
-		}
-		IsTouched=false;
-		this->stopTimer(0);
-		this->resetTexturePosition();
-	}
+            this->setVisible(false);
+        }
+        IsTouched=false;
+        this->stopTimer(0);
+        this->resetTexturePosition();
+    }
     
     
 }

@@ -7,7 +7,6 @@
 //
 
 #include "ImageHelper.h"
-#include "EnumUtil.h"
 
 using namespace std;
 
