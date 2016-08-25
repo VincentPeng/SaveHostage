@@ -103,30 +103,6 @@ void GameLayer::positionAllRoles() {
     }
 }
 
-void GameLayer::initGameControls() {
-    gameSticker = JoyStick::createJoyStick("control_bg.png", "joystick.png", 25,
-                                           65, false, true, false, true);
-    gameSticker->setPosition(tileCoordinate2Pixel(Point(JOYSTICK)));
-    gameSticker->setDelegate(this);
-    this->addChild(gameSticker, 2);
-    
-    saveBtn = MenuItemImage::create(
-                                    "key.png", "key2.png", CC_CALLBACK_1(GameLayer::saveBtnPressed, this));
-    Menu* pMenu = Menu::create(saveBtn, NULL);
-    pMenu->setPosition(tileCoordinate2Pixel(Point(UNLOCKBT)));
-    this->addChild(pMenu, 2);
-    
-    Sprite* timerSprite = Sprite::create("hpblood.png");
-    heroHealthBarTimer = ProgressTimer::create(timerSprite);
-    heroHealthBarTimer->setType(ProgressTimer::Type::BAR);
-    heroHealthBarTimer->setMidpoint(Point(0.0, 0.5));
-    heroHealthBarTimer->setPercentage(100);
-    heroHealthBarTimer->setZOrder(100);
-    heroHealthBarTimer->setVisible(true);
-    heroHealthBarTimer->setPosition(555.0f, 90.0f);
-    addChild(heroHealthBarTimer, 1);
-}
-
 bool GameLayer::init() {
     bool ret = false;
     do {
@@ -246,137 +222,28 @@ void GameLayer::loadCharactorAndScene() {
     addChild(menu1, 7);
 }
 
-void GameLayer::saveBtnPressed(Object* pSender) {
-    CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect(EFCT_UNLOCK1);
-}
-
-void GameLayer::onJoyStickUpdate(Node* sender, float angle, Point direction,
-                                 float power) {
-    if (!joyStickerEnabled) {
-        return;
-    }
-}
-
-Point GameLayer::convertCoordinate2Pixel(int x, int y, int mapHeight) {
-    return Point((x + 0.5) * BLKWIDTH, (mapHeight - y - 0.5) * BLKWIDTH);
-}
-
-void GameLayer::checkSaveButton() {
-    int i = 0;
-    for (; i < hostages.size(); i++) {
-        if (!hostages[i]->isSaved() &&
-            distance(hostages[i]->getPosition(), _hero->getPosition()) < 40.0) {
-            saveBtn->setEnabled(true);
-            break;
-        }
-    }
-    if (i == hostages.size()) {
-        saveBtn->setEnabled(false);
-    }
-    if (saveBtn->isSelected()) {
-        joyStickerEnabled = false;
-        if (_hero->getCurrentHostage()) {
-            _hero->incrementSavingClock();
-            _hero->getCurrentHostage()->setClockPassed(_hero->getSavingClock());
-            return;
-        }
-        for (; i < hostages.size(); i++) {
-            if (!hostages[i]->isSaved() &&
-                distance(hostages[i]->getPosition(), _hero->getPosition()) < 40.0) {
-                _hero->setCurrentHostage(hostages[i]);
-                _hero->setTargetSavingClocks(hostages[i]->getTotalClocksNeeded());
-                hostages[i]->showProgressTimer();
-                break;
-            }
-        }
-    } else {
-        if (_hero->getCurrentHostage())
-            _hero->getCurrentHostage()->hideProgressTimer();
-        _hero->setCurrentHostage(NULL);
-        _hero->zeroSavingClock();
-        joyStickerEnabled = true;
-    }
-}
-
-void GameLayer::checkJoysticker() {
-    float angle = gameSticker->getaAngle();
-    if (joyStickerEnabled && gameSticker->getpPower() > 0.5) {
-        Direction direction = STOP;
-        Point nextNode;
-        Point current = _hero->getCurrentNode();
-        float e = 90.0 / 4;
-        if (angle >= -e && angle < e) {
-            direction = RIGHT;
-            nextNode = Point(current.x + 1, current.y);
-        }
-        if (angle >= e && angle < 3 * e) {
-            direction = UR;
-            nextNode = Point(current.x + 1, current.y - 1);
-        }
-        if (angle >= 3 * e && angle < 5 * e) {
-            direction = UP;
-            nextNode = Point(current.x, current.y - 1);
-        }
-        if (angle >= 5 * e && angle < 7 * e) {
-            direction = UL;
-            nextNode = Point(current.x - 1, current.y - 1);
-        }
-        if (angle >= 7 * e || angle < -7 * e) {
-            direction = LEFT;
-            nextNode = Point(current.x - 1, current.y);
-        }
-        if (angle >= -7 * e && angle < -5 * e) {
-            direction = DL;
-            nextNode = Point(current.x - 1, current.y + 1);
-        }
-        if (angle >= -5 * e && angle < -3 * e) {
-            direction = DOWN;
-            nextNode = Point(current.x, current.y + 1);
-        }
-        if (angle >= -3 * e && angle < -e) {
-            direction = DR;
-            nextNode = Point(current.x + 1, current.y + 1);
-        }
-        
-        Point pixelpos = convertCoordinate2Pixel(nextNode.x, nextNode.y,
-                                                 _map->getMapSize().height);
-        if (canGo(pixelpos.x, pixelpos.y)) {
-            _hero->setNextNode(nextNode);
-            _hero->setNextPosition(pixelpos);
-            _hero->setNextDirection(direction);
-        }
-    }
-}
-
-void GameLayer::checkGameEnded() {
-    int endType = 0;
-    if (_hero->isDead()) {
-        GameSuspended = true;
-        endType = 0;
-    } else if (_hero->getCurrentNode() == Point(30, 1)) {
-        bool saved = true;
-        for (int i = 0; i < hostages.size(); i++) {
-            if (hostages[i]->isSaved() == false) {
-                saved = false;
-            }
-        }
-        if (saved) {
-            // CCLOG("Game ends You win!");
-            GameSuspended = true;
-            endType = 1;
-        }
-    }
-    if (GameSuspended == true) {
-        GameEndLayer* gendlayer = GameEndLayer::create();
-        gendlayer->setGameEndLayerType(endType);
-        gendlayer->setParentGameLayer(this);
-        this->addChild(gendlayer, 4);
-        joyStickerEnabled = false;
-    }
-}
-
-void GameLayer::updateHeroHealthBar() {
-    heroHealthBarTimer->setPercentage(_hero->getHealth());
+void GameLayer::initGameControls() {
+    gameSticker = JoyStick::createJoyStick("control_bg.png", "joystick.png", 25,
+                                           65, false, true, false, true);
+    gameSticker->setPosition(tileCoordinate2Pixel(Point(JOYSTICK)));
+    gameSticker->setDelegate(this);
+    this->addChild(gameSticker, 2);
+    
+    saveBtn = MenuItemImage::create(
+                                    "key.png", "key2.png", CC_CALLBACK_1(GameLayer::rescueBtnPressed, this));
+    Menu* pMenu = Menu::create(saveBtn, NULL);
+    pMenu->setPosition(tileCoordinate2Pixel(Point(UNLOCKBT)));
+    this->addChild(pMenu, 2);
+    
+    Sprite* timerSprite = Sprite::create("hpblood.png");
+    heroHealthBarTimer = ProgressTimer::create(timerSprite);
+    heroHealthBarTimer->setType(ProgressTimer::Type::BAR);
+    heroHealthBarTimer->setMidpoint(Point(0.0, 0.5));
+    heroHealthBarTimer->setPercentage(100);
+    heroHealthBarTimer->setZOrder(100);
+    heroHealthBarTimer->setVisible(true);
+    heroHealthBarTimer->setPosition(555.0f, 90.0f);
+    addChild(heroHealthBarTimer, 1);
 }
 
 void GameLayer::update(float dt) {
@@ -432,25 +299,6 @@ void GameLayer::update(float dt) {
     }
 }
 
-Point GameLayer::tileCoordinate(float x, float y) {
-    int newx = x / _map->getTileSize().width;
-    int newy = (_map->getMapSize().height * _map->getTileSize().height - y) /
-    _map->getTileSize().height;
-    return Point(newx, newy);
-}
-
-Point GameLayer::tileCoordinate(Point p) {
-    int newx = p.x / _map->getTileSize().width;
-    int newy = (_map->getMapSize().height * _map->getTileSize().height - p.y) /
-    _map->getTileSize().height;
-    return Point(newx, newy);
-}
-
-Point GameLayer::tileCoordinate2Pixel(Point point) {
-    return Point((point.x + 0.5) * BLKWIDTH,
-                 (_map->getMapSize().height - point.y - 0.5) * BLKWIDTH);
-}
-
 bool GameLayer::canGo(float x, float y) {
     bool ret = true;
     int gid = _metaLayer->getTileGIDAt(tileCoordinate(x, y));
@@ -472,7 +320,7 @@ bool GameLayer::canGo(Point p) {
     bool ret = true;
     int gid = _metaLayer->getTileGIDAt(p);
     unordered_map<string, Value> kmap =
-    _map->getPropertiesForGID(gid).asValueMap();
+        _map->getPropertiesForGID(gid).asValueMap();
     if (kmap.empty()) {
         LOGE("kmap is null!!");
     } else {
@@ -485,17 +333,25 @@ bool GameLayer::canGo(Point p) {
     return ret;
 }
 
-void GameLayer::onWalk(int direction) {}
-
-void GameLayer::onStop() {
-    // CCLOG("GameLayer onStop");
-    tempstate = 0;
+Point GameLayer::tileCoordinate(float x, float y) {
+    int newx = x / _map->getTileSize().width;
+    int newy = (_map->getMapSize().height * _map->getTileSize().height - y) /
+    _map->getTileSize().height;
+    return Point(newx, newy);
 }
 
-/**
- *  Function that can check whether the State should change, depends on the
- * Final State Machine.
- */
+Point GameLayer::tileCoordinate(Point p) {
+    int newx = p.x / _map->getTileSize().width;
+    int newy = (_map->getMapSize().height * _map->getTileSize().height - p.y) /
+    _map->getTileSize().height;
+    return Point(newx, newy);
+}
+
+Point GameLayer::tileCoordinate2Pixel(Point point) {
+    return Point((point.x + 0.5) * BLKWIDTH,
+                 (_map->getMapSize().height - point.y - 0.5) * BLKWIDTH);
+}
+
 void GameLayer::checkNewEvent() {
     checkGameEnded();
     int dist = distance(_hero->getPosition(), _enemy->getPosition());
@@ -615,9 +471,143 @@ void GameLayer::checkNewEvent() {
         changeSign();
     }
     
-    checkSaveButton();
+    checkRescueButton();
     checkJoysticker();
     updateHeroHealthBar();
+}
+
+
+void GameLayer::rescueBtnPressed(Object* pSender) {
+    CocosDenshion::SimpleAudioEngine::sharedEngine()->playEffect(EFCT_UNLOCK1);
+}
+
+void GameLayer::onJoyStickUpdate(Node* sender, float angle, Point direction,
+                                 float power) {
+    if (!joyStickerEnabled) {
+        return;
+    }
+}
+
+Point GameLayer::convertCoordinate2Pixel(int x, int y, int mapHeight) {
+    return Point((x + 0.5) * BLKWIDTH, (mapHeight - y - 0.5) * BLKWIDTH);
+}
+
+void GameLayer::checkRescueButton() {
+    int i = 0;
+    for (; i < hostages.size(); i++) {
+        if (!hostages[i]->isSaved() &&
+            distance(hostages[i]->getPosition(), _hero->getPosition()) < 40.0) {
+            saveBtn->setEnabled(true);
+            break;
+        }
+    }
+    if (i == hostages.size()) {
+        saveBtn->setEnabled(false);
+    }
+    if (saveBtn->isSelected()) {
+        joyStickerEnabled = false;
+        if (_hero->getCurrentHostage()) {
+            _hero->incrementSavingClock();
+            _hero->getCurrentHostage()->setClockPassed(_hero->getSavingClock());
+            return;
+        }
+        for (; i < hostages.size(); i++) {
+            if (!hostages[i]->isSaved() &&
+                distance(hostages[i]->getPosition(), _hero->getPosition()) < 40.0) {
+                _hero->setCurrentHostage(hostages[i]);
+                _hero->setTargetSavingClocks(hostages[i]->getTotalClocksNeeded());
+                hostages[i]->showProgressTimer();
+                break;
+            }
+        }
+    } else {
+        if (_hero->getCurrentHostage())
+            _hero->getCurrentHostage()->hideProgressTimer();
+        _hero->setCurrentHostage(NULL);
+        _hero->zeroSavingClock();
+        joyStickerEnabled = true;
+    }
+}
+
+void GameLayer::checkJoysticker() {
+    float angle = gameSticker->getaAngle();
+    if (joyStickerEnabled && gameSticker->getpPower() > 0.5) {
+        Direction direction = STOP;
+        Point nextNode;
+        Point current = _hero->getCurrentNode();
+        float e = 90.0 / 4;
+        if (angle >= -e && angle < e) {
+            direction = RIGHT;
+            nextNode = Point(current.x + 1, current.y);
+        }
+        if (angle >= e && angle < 3 * e) {
+            direction = UR;
+            nextNode = Point(current.x + 1, current.y - 1);
+        }
+        if (angle >= 3 * e && angle < 5 * e) {
+            direction = UP;
+            nextNode = Point(current.x, current.y - 1);
+        }
+        if (angle >= 5 * e && angle < 7 * e) {
+            direction = UL;
+            nextNode = Point(current.x - 1, current.y - 1);
+        }
+        if (angle >= 7 * e || angle < -7 * e) {
+            direction = LEFT;
+            nextNode = Point(current.x - 1, current.y);
+        }
+        if (angle >= -7 * e && angle < -5 * e) {
+            direction = DL;
+            nextNode = Point(current.x - 1, current.y + 1);
+        }
+        if (angle >= -5 * e && angle < -3 * e) {
+            direction = DOWN;
+            nextNode = Point(current.x, current.y + 1);
+        }
+        if (angle >= -3 * e && angle < -e) {
+            direction = DR;
+            nextNode = Point(current.x + 1, current.y + 1);
+        }
+        
+        Point pixelpos = convertCoordinate2Pixel(nextNode.x, nextNode.y,
+                                                 _map->getMapSize().height);
+        if (canGo(pixelpos.x, pixelpos.y)) {
+            _hero->setNextNode(nextNode);
+            _hero->setNextPosition(pixelpos);
+            _hero->setNextDirection(direction);
+        }
+    }
+}
+
+void GameLayer::checkGameEnded() {
+    int endType = 0;
+    if (_hero->isDead()) {
+        GameSuspended = true;
+        endType = 0;
+    } else if (_hero->getCurrentNode() == Point(30, 1)) {
+        bool saved = true;
+        for (int i = 0; i < hostages.size(); i++) {
+            if (hostages[i]->isSaved() == false) {
+                saved = false;
+            }
+        }
+        if (saved) {
+            // CCLOG("Game ends You win!");
+            GameSuspended = true;
+            endType = 1;
+        }
+    }
+    if (GameSuspended == true) {
+        GameEndLayer* gendlayer = GameEndLayer::create();
+        gendlayer->setGameEndLayerType(endType);
+        gendlayer->setParentGameLayer(this);
+        this->addChild(gendlayer, 4);
+        joyStickerEnabled = false;
+    }
+}
+
+void GameLayer::updateHeroHealthBar() {
+    heroHealthBarTimer->setPercentage(_hero->getHealth());
 }
 
 int GameLayer::distance(Point a, Point b) {
@@ -627,8 +617,6 @@ int GameLayer::distance(Point a, Point b) {
     return (int)sqrt(x * x + y * y);
 }
 
-// get the path from A to B if there is no block between them,
-// return NULL if there is block, if path has 0 size, it is too close.
 vector<Point>* GameLayer::getStraightPath(Point from, Point to) {
     vector<Point>* path = new vector<Point>();
     if (from == to) {

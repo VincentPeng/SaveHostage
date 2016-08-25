@@ -17,7 +17,7 @@ bool PreGameScene::init() {
     bool ret = false;
     // CCLOG("GameLogoScene::init");
     do {
-        Sprite* bg = Sprite::create("pregamebg.png");
+        Sprite* bg = Sprite::create(PIC_PREGAME_BG);
         bg->setPosition(WIDTH_CENTER, HEIGHT_CENTER);
         
         addChild(bg);
@@ -30,7 +30,7 @@ bool PreGameScene::init() {
         Menu* menu = Menu::create(startItem, aboutItem, NULL);
         menu->alignItemsHorizontallyWithPadding(150.0);
         
-        menu->setPosition(500.0f, 120.0f);
+        menu->setPosition(WIDTH_CENTER, HEIGHT_CENTER + 40.0f);
         this->addChild(menu);
         
         ret = true;
@@ -38,11 +38,13 @@ bool PreGameScene::init() {
     return ret;
 }
 
+// Start button callback function
 void PreGameScene::startPressed(Object* pSender) {
-    auto scene = MyScene::create();
+    auto scene = GameScene::create();
     Director::getInstance()->replaceScene(scene);
 }
 
+// About button callback function
 void PreGameScene::aboutPressed(Object* pSender) {
     // TODO: Add about page
 }

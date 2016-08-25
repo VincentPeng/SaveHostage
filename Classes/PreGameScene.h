@@ -11,7 +11,7 @@
 
 #include "cocos2d.h"
 #include "EnumUtil.h"
-#include "MyScene.h"
+#include "GameScene.h"
 
 USING_NS_CC;
 

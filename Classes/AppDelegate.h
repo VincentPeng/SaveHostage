@@ -2,7 +2,7 @@
 #define _APP_DELEGATE_H_
 
 #include "cocos2d.h"
-#include "MyScene.h"
+#include "GameScene.h"
 #include "GameLogoScene.h"
 #include "AppDef.h"
 #include "EnumUtil.h"

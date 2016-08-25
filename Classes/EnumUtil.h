@@ -39,6 +39,8 @@
 #define EFCT_HEAL "efct_heal.mp3"
 #define EFCT_INVISIBLE "efct_invisible.mp3"
 
+#define PIC_LOGO "gamelogobg.png"
+#define PIC_PREGAME_BG "pregamebg.png"
 #define PIC_GAMEOVER "gameover.png"
 #define PIC_GAMEWIN "gamev.png"
 #define PIC_RESUME "buttonResume.png"

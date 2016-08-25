@@ -10,8 +10,9 @@
 #define __SaveHostage__GameLogoScene__
 
 #include "cocos2d.h"
-#include "MyScene.h"
+#include "GameScene.h"
 #include "PreGameScene.h"
+#include "EnumUtil.h"
 
 USING_NS_CC;
 

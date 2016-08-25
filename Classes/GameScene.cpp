@@ -6,31 +6,35 @@
 //
 //
 
-#include "MyScene.h"
+#include "GameScene.h"
 
-int MyScene::musicLoaded = false;
+bool GameScene::musicLoaded = false;
 
-MyScene::MyScene() {}
+GameScene::GameScene() {}
 
-MyScene::~MyScene() {}
+GameScene::~GameScene() {}
 
-bool MyScene::init() {
+bool GameScene::init() {
     bool ret = false;
     do {
         CC_BREAK_IF(!Scene::init());
-        loadingResource();
+        loadResource();
         _gameLayer = GameLayer::create();
+        
+        // GameLayer will contain background, so should be at bottom
         this->addChild(_gameLayer, 1);
         ret = true;
     } while (0);
     return ret;
 }
 
-void MyScene::loadingResource() {
-    if (!musicLoaded) loadingMusic();
+// Load resouces need for the scene
+void GameScene::loadResource() {
+    if (!musicLoaded) loadMusic();
 }
 
-void MyScene::loadingMusic() {
+// Load music
+void GameScene::loadMusic() {
     musicLoaded = true;
     auto Audio = CocosDenshion::SimpleAudioEngine::getInstance();
     Audio->preloadEffect(MUSIC_GAMEOVER);

@@ -14,11 +14,11 @@ GameLogoScene::~GameLogoScene() {}
 
 bool GameLogoScene::init() {
     bool ret = false;
-    // CCLOG("GameLogoScene::init");
     do {
-        Sprite* bg = Sprite::create("gamelogobg.png");
-        //        bg->setPosition(480.0f, 270.0f);
+        Sprite* bg = Sprite::create(PIC_LOGO);
         bg->setPosition(WIDTH_CENTER, HEIGHT_CENTER);
+        
+        // Load Start scene after x seconds
         this->schedule(schedule_selector(GameLogoScene::loadGameScene), 2.0f);
         addChild(bg);
         ret = true;
@@ -28,6 +28,8 @@ bool GameLogoScene::init() {
 
 void GameLogoScene::loadGameScene(float dt) {
     auto s = PreGameScene::create();
+    
+    // Add fade in effect before launching next scene
     auto scene = TransitionFade::create(1.5, s, Color3B::WHITE);
     Director::getInstance()->replaceScene(scene);
 }
